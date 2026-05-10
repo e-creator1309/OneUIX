@@ -3,13 +3,76 @@ package io.github.soclear.oneuix.hook
 import android.os.Build
 import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedBridge
+import de.robv.android.xposed.XposedHelpers
 import de.robv.android.xposed.XposedHelpers.findAndHookMethod
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam
 import io.github.soclear.oneuix.data.Package
+import io.github.soclear.oneuix.hook.util.xlog
 
 object Weather {
     fun setProviderCN(loadPackageParam: LoadPackageParam) {
         if (loadPackageParam.packageName != Package.WEATHER) return
+
+        try {
+            XposedHelpers.findAndHookConstructor(
+                "com.samsung.android.weather.domain.entity.weather.Location",
+                loadPackageParam.classLoader,
+                Int::class.javaPrimitiveType,
+                "java.lang.String",
+                "java.lang.String",
+                "java.lang.String",
+                "java.lang.String",
+                "java.lang.String",
+                "java.lang.String",
+                "java.lang.String",
+                "java.lang.String",
+                "java.lang.String",
+                Boolean::class.javaPrimitiveType,
+                "java.lang.String",
+                "java.lang.String",
+                Long::class.javaPrimitiveType,
+                "java.lang.String",
+                "java.lang.String",
+                "java.lang.String",
+                "java.lang.String",
+                object : XC_MethodHook() {
+                    override fun beforeHookedMethod(param: MethodHookParam) {
+                        if (param.args[3].toString().isEmpty()) {
+                            param.args[3] = "0.0"
+                        }
+                        if (param.args[4].toString().isEmpty()) {
+                            param.args[4] = "0.0"
+                        }
+                    }
+                })
+        } catch (t: Throwable) {
+            xlog(t.stackTraceToString())
+        }
+
+        try {
+            findAndHookMethod("com.samsung.android.weather.domain.entity.weather.Location", loadPackageParam.classLoader, "setLatitude", "java.lang.String", object : XC_MethodHook() {
+                override fun beforeHookedMethod(param: MethodHookParam) {
+                    if (param.args[0].toString().isEmpty()) {
+                        param.args[0] = "0.0"
+                    }
+                }
+            })
+        } catch (t: Throwable) {
+            xlog(t.stackTraceToString())
+        }
+
+        try {
+            findAndHookMethod("com.samsung.android.weather.domain.entity.weather.Location", loadPackageParam.classLoader, "setLongitude", "java.lang.String", object : XC_MethodHook() {
+                override fun beforeHookedMethod(param: MethodHookParam) {
+                    if (param.args[0].toString().isEmpty()) {
+                        param.args[0] = "0.0"
+                    }
+                }
+            })
+        } catch (t: Throwable) {
+            xlog(t.stackTraceToString())
+        }
+
         try {
             if (loadPackageParam.appInfo.targetSdkVersion >= Build.VERSION_CODES.BAKLAVA) {
                 setProvider(loadPackageParam, "CN")
