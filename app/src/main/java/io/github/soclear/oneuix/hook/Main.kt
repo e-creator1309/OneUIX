@@ -112,6 +112,10 @@ class Main : IXposedHookLoadPackage, IXposedHookInitPackageResources {
                 if (preference.other.showMemoryUsageInRecents) {
                     Launcher.showMemoryUsageInRecents(lpparam)
                 }
+
+                if (preference.other.hideAppsSearchBar) {
+                    Launcher.hideAppsSearchBar(lpparam)
+                }
             }
 
             Package.MDEC_SERVICE -> {

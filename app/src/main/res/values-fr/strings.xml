@@ -94,4 +94,5 @@
     <string name="setCustomCarrierName_title">Définir le nom de l\'opérateur personnalisé</string>
     <string name="hideLockscreenStatusBar_title">Masquer la barre d\'état sur l\'écran de verrouillage</string>
     <string name="rebootSystemUI">Redémarrer l\'UI système (root)</string>
+    <string name="hideAppsSearchBar_title">Masquer la barre de recherche sur l\'écran des applications</string>
 </resources>

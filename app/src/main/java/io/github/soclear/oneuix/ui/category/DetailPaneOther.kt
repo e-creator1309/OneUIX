@@ -119,6 +119,12 @@ fun DetailPaneOther(
             checked = uiState.useSPenGoogleTranslate,
             onCheckedChange = { onEvent(OtherEvent.UseSPenGoogleTranslate(it)) }
         )
+        SwitchItem(
+            icon = ImageVector.vectorResource(id = R.drawable.apps),
+            title = stringResource(id = R.string.hideAppsSearchBar_title),
+            checked = uiState.hideAppsSearchBar,
+            onCheckedChange = { onEvent(OtherEvent.HideAppsSearchBar(it)) }
+        )
     }
 }
 
@@ -165,6 +171,9 @@ sealed interface OtherEvent {
 
     @JvmInline
     value class UseSPenGoogleTranslate(val value: Boolean) : OtherEvent
+
+    @JvmInline
+    value class HideAppsSearchBar(val value: Boolean) : OtherEvent
 }
 
 fun SettingViewModel.onOtherEvent(event: OtherEvent) {
@@ -251,6 +260,12 @@ fun SettingViewModel.onOtherEvent(event: OtherEvent) {
             is OtherEvent.UseSPenGoogleTranslate -> preference.copy(
                 other = preference.other.copy(
                     useSPenGoogleTranslate = event.value
+                )
+            )
+
+            is OtherEvent.HideAppsSearchBar -> preference.copy(
+                other = preference.other.copy(
+                    hideAppsSearchBar = event.value
                 )
             )
         }

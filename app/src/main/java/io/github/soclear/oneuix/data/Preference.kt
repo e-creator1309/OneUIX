@@ -125,6 +125,7 @@ data class Preference(
         val noAIWatermark: Boolean = true,
         val bypassHealthMonitorCountryCheck: Boolean = false,
         val useSPenGoogleTranslate: Boolean = false,
+        val hideAppsSearchBar: Boolean = false,
     )
 
     companion object {

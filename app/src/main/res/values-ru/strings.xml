@@ -94,4 +94,5 @@
     <string name="setCustomCarrierName_title">Собственное имя оператора</string>
     <string name="hideLockscreenStatusBar_title">Скрыть строку состояния на экране блокировки</string>
     <string name="rebootSystemUI">Перезапуск System UI (Root)</string>
+    <string name="hideAppsSearchBar_title">Скрыть строку поиска на экране приложений</string>
 </resources>

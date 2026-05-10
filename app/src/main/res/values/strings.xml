@@ -94,4 +94,5 @@
     <string name="setCustomCarrierName_title">Set custom carrier name</string>
     <string name="hideLockscreenStatusBar_title">Hide status bar on lock screen</string>
     <string name="rebootSystemUI">Reboot System UI (root)</string>
+    <string name="hideAppsSearchBar_title">Hide search bar on app screen</string>
 </resources>
