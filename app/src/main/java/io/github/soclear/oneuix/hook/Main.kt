@@ -116,6 +116,10 @@ class Main : IXposedHookLoadPackage, IXposedHookInitPackageResources {
                 if (preference.other.hideAppsSearchBar) {
                     Launcher.hideAppsSearchBar(lpparam)
                 }
+
+                if (preference.other.removeShortcutBadge) {
+                    Launcher.removeShortcutBadge(lpparam)
+                }
             }
 
             Package.MDEC_SERVICE -> {

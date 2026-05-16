@@ -128,6 +128,13 @@ fun DetailPaneOther(
             checked = uiState.hideAppsSearchBar,
             onCheckedChange = { onEvent(OtherEvent.HideAppsSearchBar(it)) }
         )
+        SwitchItem(
+            icon = ImageVector.vectorResource(id = R.drawable.position_bottom_right),
+            title = stringResource(id = R.string.removeShortcutBadge_title),
+            summary = stringResource(id = R.string.removeShortcutBadge_summary),
+            checked = uiState.removeShortcutBadge,
+            onCheckedChange = { onEvent(OtherEvent.RemoveShortcutBadge(it)) }
+        )
         SelectItem(
             icon = ImageVector.vectorResource(id = R.drawable.watch_pairing),
             title = stringResource(id = R.string.watchPairing_connectionMode_title),
@@ -205,6 +212,9 @@ sealed interface OtherEvent {
 
     @JvmInline
     value class HideAppsSearchBar(val value: Boolean) : OtherEvent
+
+    @JvmInline
+    value class RemoveShortcutBadge(val value: Boolean) : OtherEvent
 
     @JvmInline
     value class BypassWatchPairingRegionCheck(val value: Boolean) : OtherEvent
@@ -306,6 +316,12 @@ fun SettingViewModel.onOtherEvent(event: OtherEvent) {
             is OtherEvent.HideAppsSearchBar -> preference.copy(
                 other = preference.other.copy(
                     hideAppsSearchBar = event.value
+                )
+            )
+
+            is OtherEvent.RemoveShortcutBadge -> preference.copy(
+                other = preference.other.copy(
+                    removeShortcutBadge = event.value
                 )
             )
 

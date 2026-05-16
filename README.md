@@ -116,6 +116,8 @@
 - 禁用图片编辑器 AI 水印
 - 绕过 Samsung Health Monitor 国家检查
 - S Pen 使用谷歌翻译
+- 隐藏应用屏幕搜索栏
+- 移除快捷方式图标右下角小角标
 
 ### 📦 安装要求
 
@@ -230,6 +232,8 @@
 - Disable Photo Editor AI watermark
 - Bypass Samsung Health Monitor country check
 - Use Google Translate for S Pen
+- Hide search bar on app screen
+- Remove bottom-right shortcut badge
 
 ### 📦 Installation Requirements
 
