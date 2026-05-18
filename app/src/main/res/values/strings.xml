@@ -138,4 +138,6 @@
     <string name="restartRecovery">Reboot to recovery</string>
     <string name="restartDownload">Reboot to download mode</string>
     <string name="sideKeySettings">Side button settings</string>
+    <string name="allowAllRotation_title">Allow all rotation angles</string>
+    <string name="allowAllRotation_summary">Enable 180° rotation on phones (normally only available on tablets)</string>
 </resources>

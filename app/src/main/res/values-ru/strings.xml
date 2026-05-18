@@ -138,4 +138,6 @@
     <string name="restartRecovery">Перезагрузка в Recovery</string>
     <string name="restartDownload">Перезагрузка в режим Download</string>
     <string name="sideKeySettings">Настройки боковой кнопки</string>
+    <string name="allowAllRotation_title">Разрешить все углы поворота</string>
+    <string name="allowAllRotation_summary">Включить поворот на 180° на телефонах (обычно доступно только на планшетах)</string>
 </resources>

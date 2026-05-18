@@ -93,6 +93,13 @@ fun DetailPaneAndroid(
                 onCheckedChange = { onEvent(AndroidEvent.SupportAppJumpBlock(it)) }
             )
         }
+        SwitchItem(
+            icon = ImageVector.vectorResource(id = R.drawable.expand),
+            title = stringResource(id = R.string.allowAllRotation_title),
+            summary = stringResource(id = R.string.allowAllRotation_summary),
+            checked = uiState.allowAllRotation,
+            onCheckedChange = { onEvent(AndroidEvent.AllowAllRotation(it)) }
+        )
     }
 }
 
@@ -111,6 +118,9 @@ sealed interface AndroidEvent {
 
     @JvmInline
     value class SupportAppJumpBlock(val value: Boolean) : AndroidEvent
+
+    @JvmInline
+    value class AllowAllRotation(val value: Boolean) : AndroidEvent
 }
 
 fun SettingViewModel.onAndroidEvent(event: AndroidEvent) {
@@ -152,6 +162,14 @@ fun SettingViewModel.onAndroidEvent(event: AndroidEvent) {
                 preference.copy(
                     android = preference.android.copy(
                         supportAppJumpBlock = event.value
+                    )
+                )
+            }
+
+            is AndroidEvent.AllowAllRotation -> {
+                preference.copy(
+                    android = preference.android.copy(
+                        allowAllRotation = event.value
                     )
                 )
             }

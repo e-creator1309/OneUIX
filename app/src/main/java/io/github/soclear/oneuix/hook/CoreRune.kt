@@ -3,6 +3,7 @@ package io.github.soclear.oneuix.hook
 import android.content.Context
 import android.os.Build
 import de.robv.android.xposed.XC_MethodHook
+import de.robv.android.xposed.XC_MethodReplacement
 import de.robv.android.xposed.XposedBridge
 import de.robv.android.xposed.XposedHelpers.findAndHookConstructor
 import de.robv.android.xposed.XposedHelpers.findAndHookMethod
@@ -55,6 +56,27 @@ object CoreRune {
                     callback
                 )
             }
+        } catch (t: Throwable) {
+            XposedBridge.log(t)
+        }
+    }
+
+    fun allowAllRotation(loadPackageParam: LoadPackageParam) {
+        if (loadPackageParam.packageName != Package.ANDROID) {
+            return
+        }
+
+        try {
+            val coreRuneClass = findClass("com.samsung.android.rune.CoreRune", loadPackageParam.classLoader)
+            setStaticBooleanField(coreRuneClass, "FW_ALLOW_ALL_ROTATION", true)
+            setStaticBooleanField(coreRuneClass, "FW_ORIENTATION_CONTROL", true)
+            findAndHookMethod(
+                "com.android.internal.view.RotationPolicy",
+                loadPackageParam.classLoader,
+                "areAllRotationsAllowed",
+                Context::class.java,
+                XC_MethodReplacement.returnConstant(true)
+            )
         } catch (t: Throwable) {
             XposedBridge.log(t)
         }

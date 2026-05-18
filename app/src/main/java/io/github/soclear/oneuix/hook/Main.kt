@@ -47,6 +47,10 @@ class Main : IXposedHookLoadPackage, IXposedHookInitPackageResources, IXposedHoo
                 if (preference.android.supportAppJumpBlock) {
                     CoreRune.supportAppJumpBlock(lpparam)
                 }
+
+                if (preference.android.allowAllRotation) {
+                    CoreRune.allowAllRotation(lpparam)
+                }
             }
 
             Package.BROWSER -> {
