@@ -12,3 +12,6 @@ keystore.properties
 /.kotlin
 *.keystore
 *.jks
+
+# AI
+.trae

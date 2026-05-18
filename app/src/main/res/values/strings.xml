@@ -46,6 +46,18 @@
     <string name="supportAllCameraMenu_summary">Shutter sound, Auto HDR, Log, Frame watermark</string>
     <string name="disableCameraTemperatureCheck_title">Disable camera temperature check</string>
     <string name="disableScreenshotCaptureSound_title">Disable screenshot sound</string>
+    <string name="customPowerMenu_title">Customize power menu actions</string>
+    <string name="powerMenuActionVisible_summary">Visible, position %1$d</string>
+    <string name="powerMenuActionHidden_summary">Hidden</string>
+    <string name="moveUp">Up</string>
+    <string name="moveDown">Down</string>
+    <string name="powerMenuAction_power">Power off</string>
+    <string name="powerMenuAction_dataMode">Mobile data</string>
+    <string name="powerMenuAction_restart">Restart</string>
+    <string name="powerMenuAction_safeMode">Safe mode</string>
+    <string name="powerMenuAction_lockDownMode">Lockdown mode</string>
+    <string name="powerMenuAction_emergencyCall">Emergency call</string>
+    <string name="powerMenuAction_medicalInfo">Medical info</string>
     <string name="showPackageInfo_title">Show package info on App Info page</string>
     <string name="showPackageInfo_summary">Long press or double tap to copy</string>
     <string name="makeAllUserAppsAvailable_title">Make all user apps available for app cloning</string>
@@ -93,7 +105,6 @@
     <string name="supportCallAndTextOnOtherDevices_summary">Settings -> Connected devices -> Call &amp; text on other devices</string>
     <string name="setCustomCarrierName_title">Set custom carrier name</string>
     <string name="hideLockscreenStatusBar_title">Hide status bar on lock screen</string>
-    <string name="rebootSystemUI">Reboot System UI (root)</string>
     <string name="hideAppsSearchBar_title">Hide search bar on app screen</string>
     <string name="removeShortcutBadge_title">Remove bottom-right shortcut badge</string>
     <string name="removeShortcutBadge_summary">Remove the original app badge from the bottom-right corner of home screen shortcuts</string>
@@ -106,4 +117,7 @@
     <string name="bypassWatchPairingRegionCheck_summary">Bypass region, CSC, and unsupported-phone pairing checks</string>
     <string name="supplementChinaWearOsGms_title">Supplement China WearOS GMS</string>
     <string name="supplementChinaWearOsGms_summary">If WearOS CN does not add it automatically, add com.google.android.wearable.app.cn to the download list</string>
+    <string name="restartSystemUI">Reboot System UI</string>
+    <string name="restartRecovery">Reboot to recovery</string>
+    <string name="restartDownload">Reboot to download mode</string>
 </resources>

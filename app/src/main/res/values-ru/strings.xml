@@ -46,6 +46,18 @@
     <string name="supportAllCameraMenu_summary">Звук затвора, Auto HDR, Log, Рамка-водяной знак</string>
     <string name="disableCameraTemperatureCheck_title">Отключить проверку температуры камеры</string>
     <string name="disableScreenshotCaptureSound_title">Отключить звук скриншота</string>
+    <string name="customPowerMenu_title">Настроить действия меню питания</string>
+    <string name="powerMenuActionVisible_summary">Показано, позиция %1$d</string>
+    <string name="powerMenuActionHidden_summary">Скрыто</string>
+    <string name="moveUp">Вверх</string>
+    <string name="moveDown">Вниз</string>
+    <string name="powerMenuAction_power">Выключение</string>
+    <string name="powerMenuAction_dataMode">Мобильные данные</string>
+    <string name="powerMenuAction_restart">Перезагрузка</string>
+    <string name="powerMenuAction_safeMode">Безопасный режим</string>
+    <string name="powerMenuAction_lockDownMode">Режим блокировки</string>
+    <string name="powerMenuAction_emergencyCall">Экстренный вызов</string>
+    <string name="powerMenuAction_medicalInfo">Медицинская информация</string>
     <string name="showPackageInfo_title">Имя пакета в окне «О приложении»</string>
     <string name="showPackageInfo_summary">Удерживайте или коснитесь дважды для копирования</string>
     <string name="makeAllUserAppsAvailable_title">Разрешить клонирование для всех пользовательских приложений</string>
@@ -93,7 +105,6 @@
     <string name="supportCallAndTextOnOtherDevices_summary">Настройки -> Подключенные устройства -> Вызовы и СМС на других устройствах</string>
     <string name="setCustomCarrierName_title">Собственное имя оператора</string>
     <string name="hideLockscreenStatusBar_title">Скрыть строку состояния на экране блокировки</string>
-    <string name="rebootSystemUI">Перезапуск System UI (Root)</string>
     <string name="hideAppsSearchBar_title">Скрыть строку поиска на экране приложений</string>
     <string name="removeShortcutBadge_title">Убрать значок в правом нижнем углу ярлыка</string>
     <string name="removeShortcutBadge_summary">Убрать маленький значок исходного приложения в правом нижнем углу ярлыков на рабочем столе</string>
@@ -106,4 +117,7 @@
     <string name="bypassWatchPairingRegionCheck_summary">Обход проверок региона, CSC и неподдерживаемого телефона</string>
     <string name="supplementChinaWearOsGms_title">Добавить China WearOS GMS</string>
     <string name="supplementChinaWearOsGms_summary">Если WearOS CN не добавляет его автоматически, добавить com.google.android.wearable.app.cn в список загрузки</string>
+    <string name="restartSystemUI">Перезапуск System UI</string>
+    <string name="restartRecovery">Перезагрузка в Recovery</string>
+    <string name="restartDownload">Перезагрузка в режим Download</string>
 </resources>

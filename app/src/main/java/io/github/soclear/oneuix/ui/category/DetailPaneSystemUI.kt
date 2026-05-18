@@ -19,6 +19,7 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Slider
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -36,6 +37,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import io.github.soclear.oneuix.R
 import io.github.soclear.oneuix.data.Preference
+import io.github.soclear.oneuix.data.PowerMenuAction
 import io.github.soclear.oneuix.ui.SettingViewModel
 import io.github.soclear.oneuix.ui.component.SwitchItem
 import java.time.LocalDateTime
@@ -60,7 +62,7 @@ fun DetailPaneSystemUI(
                 runCatching { Runtime.getRuntime().exec("su -c killall com.android.systemui") }
             }
         ) {
-            Text(text = stringResource(R.string.rebootSystemUI))
+            Text(text = stringResource(R.string.restartSystemUI))
         }
         DividerText(R.string.status_bar)
         Column {
@@ -604,6 +606,28 @@ fun DetailPaneSystemUI(
         }
 
         DividerText(R.string.other)
+        Column {
+            var expanded by rememberSaveable { mutableStateOf(false) }
+            SwitchItem(
+                icon = ImageVector.vectorResource(id = R.drawable.power_settings_new),
+                title = stringResource(id = R.string.customPowerMenu_title),
+                clickable = true,
+                onClick = { expanded = !expanded },
+                checked = uiState.other.customPowerMenu,
+                onCheckedChange = {
+                    expanded = it
+                    onEvent(SystemUIEvent.Other.CustomPowerMenu(it))
+                }
+            )
+            AnimatedVisibility(expanded && uiState.other.customPowerMenu) {
+                PowerMenuActionEditor(
+                    actions = uiState.other.powerMenuActions,
+                    onActionsChange = {
+                        onEvent(SystemUIEvent.Other.PowerMenuActions(it))
+                    }
+                )
+            }
+        }
         SwitchItem(
             icon = ImageVector.vectorResource(id = R.drawable.screenshot),
             title = stringResource(id = R.string.disableScreenshotCaptureSound_title),
@@ -621,6 +645,85 @@ private fun DividerText(@StringRes id: Int) = Text(
     modifier = Modifier.padding(start = 16.dp, top = 32.dp, end = 16.dp),
     color = MaterialTheme.colorScheme.primary,
 )
+
+@Composable
+private fun PowerMenuActionEditor(
+    actions: List<PowerMenuAction>,
+    onActionsChange: (List<PowerMenuAction>) -> Unit,
+) {
+    val normalizedActions = PowerMenuAction.normalize(actions)
+    Column {
+        normalizedActions.forEachIndexed { index, action ->
+            val visiblePosition = normalizedActions.take(index + 1).count { it.visible }
+            ListItem(
+                headlineContent = {
+                    Text(text = stringResource(id = powerMenuActionTitle(action.name)))
+                },
+                supportingContent = {
+                    Text(
+                        text = if (action.visible) {
+                            stringResource(id = R.string.powerMenuActionVisible_summary, visiblePosition)
+                        } else {
+                            stringResource(id = R.string.powerMenuActionHidden_summary)
+                        }
+                    )
+                },
+                trailingContent = {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Button(
+                            enabled = index > 0,
+                            onClick = {
+                                onActionsChange(normalizedActions.move(index, index - 1))
+                            }
+                        ) {
+                            Text(text = stringResource(id = R.string.moveUp))
+                        }
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Button(
+                            enabled = index < normalizedActions.lastIndex,
+                            onClick = {
+                                onActionsChange(normalizedActions.move(index, index + 1))
+                            }
+                        ) {
+                            Text(text = stringResource(id = R.string.moveDown))
+                        }
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Switch(
+                            checked = action.visible,
+                            onCheckedChange = { visible ->
+                                onActionsChange(
+                                    normalizedActions.mapIndexed { actionIndex, item ->
+                                        if (actionIndex == index) item.copy(visible = visible) else item
+                                    }
+                                )
+                            }
+                        )
+                    }
+                }
+            )
+        }
+    }
+}
+
+private fun List<PowerMenuAction>.move(fromIndex: Int, toIndex: Int): List<PowerMenuAction> =
+    toMutableList().apply {
+        add(toIndex, removeAt(fromIndex))
+    }
+
+@StringRes
+private fun powerMenuActionTitle(actionName: String): Int = when (actionName) {
+    PowerMenuAction.POWER -> R.string.powerMenuAction_power
+    PowerMenuAction.DATA_MODE -> R.string.powerMenuAction_dataMode
+    PowerMenuAction.RESTART -> R.string.powerMenuAction_restart
+    PowerMenuAction.SAFE_MODE -> R.string.powerMenuAction_safeMode
+    PowerMenuAction.LOCK_DOWN_MODE -> R.string.powerMenuAction_lockDownMode
+    PowerMenuAction.EMERGENCY_CALL -> R.string.powerMenuAction_emergencyCall
+    PowerMenuAction.MEDICAL_INFO -> R.string.powerMenuAction_medicalInfo
+    PowerMenuAction.RESTART_SYSTEMUI -> R.string.restartSystemUI
+    PowerMenuAction.RESTART_RECOVERY -> R.string.restartRecovery
+    PowerMenuAction.RESTART_DOWNLOAD -> R.string.restartDownload
+    else -> R.string.other
+}
 
 
 sealed interface SystemUIEvent {
@@ -745,6 +848,12 @@ sealed interface SystemUIEvent {
     }
 
     sealed interface Other : SystemUIEvent {
+        @JvmInline
+        value class CustomPowerMenu(val value: Boolean) : Other
+
+        @JvmInline
+        value class PowerMenuActions(val value: List<PowerMenuAction>) : Other
+
         @JvmInline
         value class DisableScreenshotCaptureSound(val value: Boolean) : Other
     }
@@ -1161,6 +1270,26 @@ private fun SettingViewModel.onAODEvent(event: SystemUIEvent.AOD) {
 private fun SettingViewModel.onOtherEvent(event: SystemUIEvent.Other) {
     updateData { preference ->
         when (event) {
+            is SystemUIEvent.Other.CustomPowerMenu -> {
+                preference.copy(
+                    systemUI = preference.systemUI.copy(
+                        other = preference.systemUI.other.copy(
+                            customPowerMenu = event.value
+                        )
+                    )
+                )
+            }
+
+            is SystemUIEvent.Other.PowerMenuActions -> {
+                preference.copy(
+                    systemUI = preference.systemUI.copy(
+                        other = preference.systemUI.other.copy(
+                            powerMenuActions = PowerMenuAction.normalize(event.value)
+                        )
+                    )
+                )
+            }
+
             is SystemUIEvent.Other.DisableScreenshotCaptureSound -> {
                 preference.copy(
                     systemUI = preference.systemUI.copy(

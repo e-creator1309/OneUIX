@@ -46,6 +46,18 @@
     <string name="supportAllCameraMenu_summary">快门音、自动 HDR、Log、边框叠加水印</string>
     <string name="disableCameraTemperatureCheck_title">禁用相机过热检查</string>
     <string name="disableScreenshotCaptureSound_title">禁用截图声音</string>
+    <string name="customPowerMenu_title">自定义关机菜单按钮</string>
+    <string name="powerMenuActionVisible_summary">已显示，位置 %1$d</string>
+    <string name="powerMenuActionHidden_summary">已隐藏</string>
+    <string name="moveUp">上移</string>
+    <string name="moveDown">下移</string>
+    <string name="powerMenuAction_power">关机</string>
+    <string name="powerMenuAction_dataMode">移动数据</string>
+    <string name="powerMenuAction_restart">重启</string>
+    <string name="powerMenuAction_safeMode">安全模式</string>
+    <string name="powerMenuAction_lockDownMode">锁定模式</string>
+    <string name="powerMenuAction_emergencyCall">紧急呼叫</string>
+    <string name="powerMenuAction_medicalInfo">医疗信息</string>
     <string name="showPackageInfo_title">应用程序信息页面显示包信息</string>
     <string name="showPackageInfo_summary">长按或双击可复制</string>
     <string name="makeAllUserAppsAvailable_title">应用分身支持所有用户应用</string>
@@ -93,7 +105,6 @@
     <string name="supportCallAndTextOnOtherDevices_summary">设置 -> 已连接的设备 -> 跨设备接打电话和收发短信</string>
     <string name="setCustomCarrierName_title">自定义运营商名称</string>
     <string name="hideLockscreenStatusBar_title">隐藏锁屏界面的状态栏</string>
-    <string name="rebootSystemUI">重启系统 UI (root)</string>
     <string name="hideAppsSearchBar_title">隐藏应用屏幕搜索栏</string>
     <string name="removeShortcutBadge_title">移除快捷方式图标右下角小角标</string>
     <string name="removeShortcutBadge_summary">去掉桌面快捷方式图标右下角的原 APP 小角标</string>
@@ -106,4 +117,7 @@
     <string name="bypassWatchPairingRegionCheck_summary">绕过区域、CSC 和不支持手机的配对检查</string>
     <string name="supplementChinaWearOsGms_title">补充国行 WearOS GMS</string>
     <string name="supplementChinaWearOsGms_summary">当 WearOS CN 未自动加入时，将 com.google.android.wearable.app.cn 加入下载列表</string>
+    <string name="restartSystemUI">重启系统 UI</string>
+    <string name="restartRecovery">重启到 Recovery</string>
+    <string name="restartDownload">重启到下载模式</string>
 </resources>

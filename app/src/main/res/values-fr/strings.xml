@@ -46,6 +46,18 @@
     <string name="supportAllCameraMenu_summary">Son de l\'obturateur, Auto HDR, Log, Filigrane avec cadre</string>
     <string name="disableCameraTemperatureCheck_title">Désactiver la vérification de surchauffe de l\'appareil photo</string>
     <string name="disableScreenshotCaptureSound_title">Désactiver le son des captures d\'écran</string>
+    <string name="customPowerMenu_title">Personnaliser les actions du menu d\'alimentation</string>
+    <string name="powerMenuActionVisible_summary">Visible, position %1$d</string>
+    <string name="powerMenuActionHidden_summary">Masqué</string>
+    <string name="moveUp">Monter</string>
+    <string name="moveDown">Descendre</string>
+    <string name="powerMenuAction_power">Éteindre</string>
+    <string name="powerMenuAction_dataMode">Données mobiles</string>
+    <string name="powerMenuAction_restart">Redémarrer</string>
+    <string name="powerMenuAction_safeMode">Mode sans échec</string>
+    <string name="powerMenuAction_lockDownMode">Mode verrouillage</string>
+    <string name="powerMenuAction_emergencyCall">Appel d\'urgence</string>
+    <string name="powerMenuAction_medicalInfo">Informations médicales</string>
     <string name="showPackageInfo_title">Afficher les infos du paquet sur la page infos de l\'application</string>
     <string name="showPackageInfo_summary">Appui long ou double-clic pour copier</string>
     <string name="makeAllUserAppsAvailable_title">Messagerie double (Dual Messenger) pour toutes les applications</string>
@@ -93,7 +105,6 @@
     <string name="supportCallAndTextOnOtherDevices_summary">Paramètres > Appareils connectés > Appels/SMS sur les autres appareils</string>
     <string name="setCustomCarrierName_title">Définir le nom de l\'opérateur personnalisé</string>
     <string name="hideLockscreenStatusBar_title">Masquer la barre d\'état sur l\'écran de verrouillage</string>
-    <string name="rebootSystemUI">Redémarrer l\'UI système (root)</string>
     <string name="hideAppsSearchBar_title">Masquer la barre de recherche sur l\'écran des applications</string>
     <string name="removeShortcutBadge_title">Supprimer le badge en bas à droite du raccourci</string>
     <string name="removeShortcutBadge_summary">Supprimer le badge de l\'application d\'origine situé dans le coin inférieur droit des icônes de raccourci de l\'écran d\'accueil</string>
@@ -106,4 +117,7 @@
     <string name="bypassWatchPairingRegionCheck_summary">Contourner les vérifications de région, CSC et téléphone non pris en charge</string>
     <string name="supplementChinaWearOsGms_title">Ajouter le GMS WearOS Chine</string>
     <string name="supplementChinaWearOsGms_summary">Si WearOS CN ne l\'ajoute pas automatiquement, ajouter com.google.android.wearable.app.cn à la liste de téléchargement</string>
+    <string name="restartSystemUI">Redémarrer l\'UI système</string>
+    <string name="restartRecovery">Redémarrer en Recovery</string>
+    <string name="restartDownload">Redémarrer en mode Download</string>
 </resources>
