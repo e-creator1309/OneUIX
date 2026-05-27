@@ -163,6 +163,10 @@ class Main : IXposedHookLoadPackage, IXposedHookInitPackageResources, IXposedHoo
                     Settings.showForcePeakRefreshRatePreference(lpparam)
                 }
 
+                if (preference.settings.supportOutdoorMode) {
+                    Settings.supportOutdoorMode(lpparam)
+                }
+
                 if (preference.settings.showMoreBatteryInfo) {
                     Settings.showMoreBatteryInfo(lpparam)
                 }
@@ -265,6 +269,10 @@ class Main : IXposedHookLoadPackage, IXposedHookInitPackageResources, IXposedHoo
 
                 if (preference.systemUI.statusBar.hideLockscreenStatusBar) {
                     SystemUI.hideLockscreenStatusBar(lpparam)
+                }
+
+                if (preference.settings.supportOutdoorMode) {
+                    SystemUI.supportOutdoorMode(lpparam)
                 }
 
                 run {
