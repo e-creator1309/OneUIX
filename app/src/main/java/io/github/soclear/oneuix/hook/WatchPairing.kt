@@ -98,7 +98,7 @@ object WatchPairing {
     private fun bypassPairingProblemCheck(lpparam: LoadPackageParam) {
         try {
             val problemClass = XposedHelpers.findClass(
-                "com.samsung.android.app.watchmanager.setupwizard.pairing.PairingProblemChecker\$Problem",
+                $$"com.samsung.android.app.watchmanager.setupwizard.pairing.PairingProblemChecker$Problem",
                 lpparam.classLoader
             )
 

@@ -46,7 +46,7 @@ object Settings {
                 loadPackageParam.classLoader,
                 "setAppLabelAndIcon",
                 PackageInfo::class.java,
-                "com.android.settingslib.applications.ApplicationsState\$AppEntry",
+                $$"com.android.settingslib.applications.ApplicationsState$AppEntry",
                 callback
             )
         } catch (t: Throwable) {
