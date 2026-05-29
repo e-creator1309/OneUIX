@@ -407,10 +407,12 @@ object Launcher {
                 object : XC_MethodHook() {
                     override fun afterHookedMethod(param: MethodHookParam) {
                         val searchBar = param.thisObject as View
-                        searchBar.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
+                        searchBar.addOnAttachStateChangeListener(object :
+                            View.OnAttachStateChangeListener {
                             override fun onViewAttachedToWindow(v: View) {
-                                (v.parent as? ViewGroup)?.removeView(v)
+                                v.visibility = View.GONE
                             }
+
                             override fun onViewDetachedFromWindow(v: View) {}
                         })
                     }
