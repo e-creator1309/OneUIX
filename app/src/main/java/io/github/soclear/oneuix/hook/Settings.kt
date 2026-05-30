@@ -14,21 +14,15 @@ import de.robv.android.xposed.XposedHelpers.callStaticMethod
 import de.robv.android.xposed.XposedHelpers.findAndHookMethod
 import de.robv.android.xposed.XposedHelpers.findClassIfExists
 import de.robv.android.xposed.XposedHelpers.findMethodExactIfExists
-import de.robv.android.xposed.XposedHelpers.getIntField
 import de.robv.android.xposed.XposedHelpers.getObjectField
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam
 import io.github.soclear.oneuix.data.Package
-import kotlin.math.log
 
 
 object Settings {
     private val shareLiveForcedBooleanPrefs = setOf(
         "share_with_coa_option",
-        "protocol_x_supported",
-        "discovery_additional_feature",
-        "china_p2p_component",
-        "visibility_temporary_option",
-        "scan_my_device_visibility_off"
+        "protocol_x_supported"
     )
 
     fun showPackageInfo(loadPackageParam: LoadPackageParam) {
@@ -235,16 +229,7 @@ object Settings {
 
         hookShareLivePreferences(loadPackageParam)
         hookShareLiveBooleanMethod(loadPackageParam, "lf.l", "c")
-        hookShareLiveBooleanMethod(loadPackageParam, "ws.b", "a")
-        hookShareLiveBooleanMethod(loadPackageParam, "ws.b", "b")
-
-        hookShareLiveIntMethod(loadPackageParam, "sf.f", "a", 15)
-        listOf("b", "c", "d", "e", "f", "h", "i", "j", "k", "l").forEach {
-            hookShareLiveBooleanMethod(loadPackageParam, "sf.f", it)
-        }
-
         hookProtocolXRepository(loadPackageParam)
-        hookMcfProtocolXFeature(loadPackageParam)
     }
 
     private fun hookShareLivePreferences(loadPackageParam: LoadPackageParam) {
@@ -314,66 +299,6 @@ object Settings {
             }
         )
 
-        hookShareLiveMethod(
-            loadPackageParam = loadPackageParam,
-            className = "lg.d",
-            methodName = "apply",
-            Any::class.java,
-            callback = returnConstant(true)
-        )
-
-        hookShareLiveMethod(
-            loadPackageParam = loadPackageParam,
-            className = "d6.a",
-            methodName = "apply",
-            Any::class.java,
-            Any::class.java,
-            callback = object : XC_MethodHook() {
-                override fun beforeHookedMethod(param: MethodHookParam) {
-                    if (getIntField(param.thisObject, "f8819h") == 10) {
-                        param.result = true
-                    }
-                }
-            }
-        )
-    }
-
-    private fun hookMcfProtocolXFeature(loadPackageParam: LoadPackageParam) {
-        hookShareLiveMethod(
-            loadPackageParam = loadPackageParam,
-            className = "sf.l0",
-            methodName = "call",
-            callback = object : XC_MethodHook() {
-                override fun beforeHookedMethod(param: MethodHookParam) {
-                    if (getIntField(param.thisObject, "f24837h") == 10) {
-                        param.result = true
-                    }
-                }
-            }
-        )
-
-        findClassIfExists(
-            "com.samsung.android.sdk.mdx.kit.compatibility.Feature",
-            loadPackageParam.classLoader
-        )?.let { featureClass ->
-            try {
-                findAndHookMethod(
-                    featureClass,
-                    "isSupported",
-                    Context::class.java,
-                    Int::class.javaPrimitiveType!!,
-                    object : XC_MethodHook() {
-                        override fun beforeHookedMethod(param: MethodHookParam) {
-                            if (param.args[1] == 128 || param.args[1] == 256) {
-                                param.result = true
-                            }
-                        }
-                    }
-                )
-            } catch (t: Throwable) {
-                XposedBridge.log(t)
-            }
-        }
     }
 
     private fun hookShareLiveBooleanMethod(
@@ -386,20 +311,6 @@ object Settings {
             className = className,
             methodName = methodName,
             callback = returnConstant(true)
-        )
-    }
-
-    private fun hookShareLiveIntMethod(
-        loadPackageParam: LoadPackageParam,
-        className: String,
-        methodName: String,
-        value: Int
-    ) {
-        hookShareLiveMethod(
-            loadPackageParam = loadPackageParam,
-            className = className,
-            methodName = methodName,
-            callback = returnConstant(value)
         )
     }
 
