@@ -109,6 +109,8 @@
     <string name="supportAutoPowerOnOff_summary">设置->重置->自动开/关机</string>
     <string name="spoofPhoneStatusAsOfficial_title">伪装手机状态为官方</string>
     <string name="spoofPhoneStatusAsOfficial_summary">设置->关于手机->状态信息</string>
+    <string name="shareWithAppleDevices_title">与 Apple 设备分享</string>
+    <string name="shareWithAppleDevices_summary">在 S Share 中开启 Quick Share Protocol X 能力检查</string>
     <string name="noAIWatermark_title">禁用图片编辑器 AI 水印</string>
     <string name="bypassHealthMonitorCountryCheck_title">绕过 Samsung Health Monitor 国家检查</string>
     <string name="bypassHealthMonitorCountryCheck_summary">在不支持的国家/地区使用 Health Monitor</string>

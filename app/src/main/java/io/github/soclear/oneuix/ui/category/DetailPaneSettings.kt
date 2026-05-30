@@ -79,6 +79,13 @@ fun DetailPaneSettings(
             checked = uiState.spoofPhoneStatusAsOfficial,
             onCheckedChange = { onEvent(SettingsEvent.SpoofPhoneStatusAsOfficial(it)) }
         )
+        SwitchItem(
+            icon = ImageVector.vectorResource(id = R.drawable.google_play),
+            title = stringResource(id = R.string.shareWithAppleDevices_title),
+            summary = stringResource(id = R.string.shareWithAppleDevices_summary),
+            checked = uiState.shareWithAppleDevices,
+            onCheckedChange = { onEvent(SettingsEvent.ShareWithAppleDevices(it)) }
+        )
     }
 }
 
@@ -106,6 +113,9 @@ sealed interface SettingsEvent {
 
     @JvmInline
     value class SpoofPhoneStatusAsOfficial(val value: Boolean) : SettingsEvent
+
+    @JvmInline
+    value class ShareWithAppleDevices(val value: Boolean) : SettingsEvent
 }
 
 fun SettingViewModel.onSettingsEvent(event: SettingsEvent) {
@@ -155,6 +165,12 @@ fun SettingViewModel.onSettingsEvent(event: SettingsEvent) {
             is SettingsEvent.SpoofPhoneStatusAsOfficial -> preference.copy(
                 settings = preference.settings.copy(
                     spoofPhoneStatusAsOfficial = event.value
+                )
+            )
+
+            is SettingsEvent.ShareWithAppleDevices -> preference.copy(
+                settings = preference.settings.copy(
+                    shareWithAppleDevices = event.value
                 )
             )
         }

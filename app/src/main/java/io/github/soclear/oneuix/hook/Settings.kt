@@ -10,8 +10,11 @@ import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XC_MethodReplacement.returnConstant
 import de.robv.android.xposed.XposedBridge
 import de.robv.android.xposed.XposedBridge.hookMethod
+import de.robv.android.xposed.XposedHelpers.callStaticMethod
 import de.robv.android.xposed.XposedHelpers.findAndHookMethod
+import de.robv.android.xposed.XposedHelpers.findClassIfExists
 import de.robv.android.xposed.XposedHelpers.findMethodExactIfExists
+import de.robv.android.xposed.XposedHelpers.getIntField
 import de.robv.android.xposed.XposedHelpers.getObjectField
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam
 import io.github.soclear.oneuix.data.Package
@@ -19,6 +22,15 @@ import kotlin.math.log
 
 
 object Settings {
+    private val shareLiveForcedBooleanPrefs = setOf(
+        "share_with_coa_option",
+        "protocol_x_supported",
+        "discovery_additional_feature",
+        "china_p2p_component",
+        "visibility_temporary_option",
+        "scan_my_device_visibility_off"
+    )
+
     fun showPackageInfo(loadPackageParam: LoadPackageParam) {
         if (loadPackageParam.packageName != Package.SETTINGS) return
         val callback = object : XC_MethodHook() {
@@ -216,5 +228,203 @@ object Settings {
         } catch (t: Throwable) {
             XposedBridge.log(t)
         }
+    }
+
+    fun shareWithAppleDevices(loadPackageParam: LoadPackageParam) {
+        if (loadPackageParam.packageName != Package.SHARELIVE) return
+
+        hookShareLivePreferences(loadPackageParam)
+        hookShareLiveBooleanMethod(loadPackageParam, "lf.l", "c")
+        hookShareLiveBooleanMethod(loadPackageParam, "ws.b", "a")
+        hookShareLiveBooleanMethod(loadPackageParam, "ws.b", "b")
+
+        hookShareLiveIntMethod(loadPackageParam, "sf.f", "a", 15)
+        listOf("b", "c", "d", "e", "f", "h", "i", "j", "k", "l").forEach {
+            hookShareLiveBooleanMethod(loadPackageParam, "sf.f", it)
+        }
+
+        hookProtocolXRepository(loadPackageParam)
+        hookMcfProtocolXFeature(loadPackageParam)
+    }
+
+    private fun hookShareLivePreferences(loadPackageParam: LoadPackageParam) {
+        try {
+            findAndHookMethod(
+                "android.app.SharedPreferencesImpl",
+                null,
+                "getBoolean",
+                String::class.java,
+                Boolean::class.javaPrimitiveType!!,
+                object : XC_MethodHook() {
+                    override fun beforeHookedMethod(param: MethodHookParam) {
+                        val key = param.args[0] as? String ?: return
+                        if (key in shareLiveForcedBooleanPrefs) {
+                            param.result = true
+                        }
+                    }
+                }
+            )
+        } catch (t: Throwable) {
+            XposedBridge.log(t)
+        }
+
+        try {
+            findAndHookMethod(
+                "android.app.SharedPreferencesImpl\$EditorImpl",
+                null,
+                "putBoolean",
+                String::class.java,
+                Boolean::class.javaPrimitiveType!!,
+                object : XC_MethodHook() {
+                    override fun beforeHookedMethod(param: MethodHookParam) {
+                        val key = param.args[0] as? String ?: return
+                        if (key in shareLiveForcedBooleanPrefs) {
+                            param.args[1] = true
+                        }
+                    }
+                }
+            )
+        } catch (t: Throwable) {
+            XposedBridge.log(t)
+        }
+
+    }
+
+    private fun hookProtocolXRepository(loadPackageParam: LoadPackageParam) {
+        hookShareLiveMethod(
+            loadPackageParam = loadPackageParam,
+            className = "wf.n5",
+            methodName = "e",
+            Boolean::class.javaPrimitiveType!!,
+            callback = object : XC_MethodHook() {
+                override fun beforeHookedMethod(param: MethodHookParam) {
+                    param.result = shareLiveTrueSingle(loadPackageParam)
+                }
+            }
+        )
+
+        hookShareLiveMethod(
+            loadPackageParam = loadPackageParam,
+            className = "wf.n5",
+            methodName = "c",
+            callback = object : XC_MethodHook() {
+                override fun beforeHookedMethod(param: MethodHookParam) {
+                    param.result = shareLiveTrueSingle(loadPackageParam)
+                }
+            }
+        )
+
+        hookShareLiveMethod(
+            loadPackageParam = loadPackageParam,
+            className = "lg.d",
+            methodName = "apply",
+            Any::class.java,
+            callback = returnConstant(true)
+        )
+
+        hookShareLiveMethod(
+            loadPackageParam = loadPackageParam,
+            className = "d6.a",
+            methodName = "apply",
+            Any::class.java,
+            Any::class.java,
+            callback = object : XC_MethodHook() {
+                override fun beforeHookedMethod(param: MethodHookParam) {
+                    if (getIntField(param.thisObject, "f8819h") == 10) {
+                        param.result = true
+                    }
+                }
+            }
+        )
+    }
+
+    private fun hookMcfProtocolXFeature(loadPackageParam: LoadPackageParam) {
+        hookShareLiveMethod(
+            loadPackageParam = loadPackageParam,
+            className = "sf.l0",
+            methodName = "call",
+            callback = object : XC_MethodHook() {
+                override fun beforeHookedMethod(param: MethodHookParam) {
+                    if (getIntField(param.thisObject, "f24837h") == 10) {
+                        param.result = true
+                    }
+                }
+            }
+        )
+
+        findClassIfExists(
+            "com.samsung.android.sdk.mdx.kit.compatibility.Feature",
+            loadPackageParam.classLoader
+        )?.let { featureClass ->
+            try {
+                findAndHookMethod(
+                    featureClass,
+                    "isSupported",
+                    Context::class.java,
+                    Int::class.javaPrimitiveType!!,
+                    object : XC_MethodHook() {
+                        override fun beforeHookedMethod(param: MethodHookParam) {
+                            if (param.args[1] == 128 || param.args[1] == 256) {
+                                param.result = true
+                            }
+                        }
+                    }
+                )
+            } catch (t: Throwable) {
+                XposedBridge.log(t)
+            }
+        }
+    }
+
+    private fun hookShareLiveBooleanMethod(
+        loadPackageParam: LoadPackageParam,
+        className: String,
+        methodName: String
+    ) {
+        hookShareLiveMethod(
+            loadPackageParam = loadPackageParam,
+            className = className,
+            methodName = methodName,
+            callback = returnConstant(true)
+        )
+    }
+
+    private fun hookShareLiveIntMethod(
+        loadPackageParam: LoadPackageParam,
+        className: String,
+        methodName: String,
+        value: Int
+    ) {
+        hookShareLiveMethod(
+            loadPackageParam = loadPackageParam,
+            className = className,
+            methodName = methodName,
+            callback = returnConstant(value)
+        )
+    }
+
+    private fun hookShareLiveMethod(
+        loadPackageParam: LoadPackageParam,
+        className: String,
+        methodName: String,
+        vararg parameterTypes: Any,
+        callback: XC_MethodHook
+    ) {
+        try {
+            findMethodExactIfExists(
+                className,
+                loadPackageParam.classLoader,
+                methodName,
+                *parameterTypes
+            )?.let { hookMethod(it, callback) }
+        } catch (t: Throwable) {
+            XposedBridge.log(t)
+        }
+    }
+
+    private fun shareLiveTrueSingle(loadPackageParam: LoadPackageParam): Any {
+        val singleClass = findClassIfExists("yv.t", loadPackageParam.classLoader)
+            ?: error("ShareLive yv.t not found")
+        return callStaticMethod(singleClass, "i", true)
     }
 }

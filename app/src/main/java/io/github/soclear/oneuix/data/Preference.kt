@@ -101,6 +101,7 @@ data class Preference(
         val supportAnyFont: Boolean = true,
         val supportAutoPowerOnOff: Boolean = false,
         val spoofPhoneStatusAsOfficial: Boolean = false,
+        val shareWithAppleDevices: Boolean = false,
     )
 
     @Serializable

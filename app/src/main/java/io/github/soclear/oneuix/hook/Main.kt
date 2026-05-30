@@ -201,6 +201,12 @@ class Main : IXposedHookLoadPackage, IXposedHookInitPackageResources, IXposedHoo
                 }
             }
 
+            Package.SHARELIVE -> {
+                if (preference.settings.shareWithAppleDevices) {
+                    Settings.shareWithAppleDevices(lpparam)
+                }
+            }
+
             Package.STORE -> {
                 if (preference.other.blockGalaxyStoreAds) {
                     GalaxyStore.blockGalaxyStoreAds(lpparam)
