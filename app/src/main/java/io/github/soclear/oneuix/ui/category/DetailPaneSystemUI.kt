@@ -784,6 +784,7 @@ private fun powerMenuActionTitle(actionName: String): Int = when (actionName) {
     PowerMenuAction.LOCK_DOWN_MODE -> R.string.powerMenuAction_lockDownMode
     PowerMenuAction.EMERGENCY_CALL -> R.string.powerMenuAction_emergencyCall
     PowerMenuAction.MEDICAL_INFO -> R.string.powerMenuAction_medicalInfo
+    PowerMenuAction.SIDE_KEY_SETTINGS -> R.string.sideKeySettings
     PowerMenuAction.FORCE_RESTART_MESSAGE -> R.string.powerMenuAction_forceRestartMessage
     PowerMenuAction.RESTART_SYSTEMUI -> R.string.restartSystemUI
     PowerMenuAction.RESTART_RECOVERY -> R.string.restartRecovery
