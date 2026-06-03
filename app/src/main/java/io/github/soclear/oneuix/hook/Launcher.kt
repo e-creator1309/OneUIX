@@ -415,6 +415,12 @@ object Launcher {
 
                             override fun onViewDetachedFromWindow(v: View) {}
                         })
+                        // 监听该 View 自身布局变化，防止 Data Binding 将 visibility 重置为 VISIBLE
+                        searchBar.addOnLayoutChangeListener { view, _, _, _, _, _, _, _, _ ->
+                            if (view.visibility != View.GONE) {
+                                view.visibility = View.GONE
+                            }
+                        }
                     }
                 }
             )
