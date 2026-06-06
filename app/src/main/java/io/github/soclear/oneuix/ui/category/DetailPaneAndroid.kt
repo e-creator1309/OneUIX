@@ -100,6 +100,13 @@ fun DetailPaneAndroid(
             checked = uiState.allowAllRotation,
             onCheckedChange = { onEvent(AndroidEvent.AllowAllRotation(it)) }
         )
+        SwitchItem(
+            icon = ImageVector.vectorResource(id = R.drawable.google_play),
+            title = stringResource(id = R.string.liftFcmNetworkLimit_title),
+            summary = stringResource(id = R.string.liftFcmNetworkLimit_summary),
+            checked = uiState.liftFcmNetworkLimit,
+            onCheckedChange = { onEvent(AndroidEvent.LiftFcmNetworkLimit(it)) }
+        )
     }
 }
 
@@ -121,6 +128,9 @@ sealed interface AndroidEvent {
 
     @JvmInline
     value class AllowAllRotation(val value: Boolean) : AndroidEvent
+
+    @JvmInline
+    value class LiftFcmNetworkLimit(val value: Boolean) : AndroidEvent
 }
 
 fun SettingViewModel.onAndroidEvent(event: AndroidEvent) {
@@ -170,6 +180,14 @@ fun SettingViewModel.onAndroidEvent(event: AndroidEvent) {
                 preference.copy(
                     android = preference.android.copy(
                         allowAllRotation = event.value
+                    )
+                )
+            }
+
+            is AndroidEvent.LiftFcmNetworkLimit -> {
+                preference.copy(
+                    android = preference.android.copy(
+                        liftFcmNetworkLimit = event.value
                     )
                 )
             }

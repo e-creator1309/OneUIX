@@ -147,4 +147,6 @@
     <string name="sideKeySettings">Side button settings</string>
     <string name="allowAllRotation_title">Allow all rotation angles</string>
     <string name="allowAllRotation_summary">Enable 180° rotation on phones (normally only available on tablets)</string>
+    <string name="liftFcmNetworkLimit_title">Lift FCM network limit</string>
+    <string name="liftFcmNetworkLimit_summary">Remove the China (including Hong Kong) firmware restriction that throttles GMS/FCM push network access</string>
 </resources>

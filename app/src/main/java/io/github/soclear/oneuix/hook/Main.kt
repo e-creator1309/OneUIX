@@ -51,6 +51,10 @@ class Main : IXposedHookLoadPackage, IXposedHookInitPackageResources, IXposedHoo
                 if (preference.android.allowAllRotation) {
                     CoreRune.allowAllRotation(lpparam)
                 }
+
+                if (preference.android.liftFcmNetworkLimit) {
+                    Android.liftFcmNetworkLimit(lpparam)
+                }
             }
 
             Package.BROWSER -> {

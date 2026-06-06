@@ -147,4 +147,6 @@
     <string name="sideKeySettings">Настройки боковой кнопки</string>
     <string name="allowAllRotation_title">Разрешить все углы поворота</string>
     <string name="allowAllRotation_summary">Включить поворот на 180° на телефонах (обычно доступно только на планшетах)</string>
+    <string name="liftFcmNetworkLimit_title">Снять ограничение сети FCM</string>
+    <string name="liftFcmNetworkLimit_summary">Убрать ограничение прошивки Китая (включая Гонконг), блокирующее сетевой доступ push GMS/FCM</string>
 </resources>

@@ -147,4 +147,6 @@
     <string name="sideKeySettings">侧面按钮设置</string>
     <string name="allowAllRotation_title">允许所有旋转角度</string>
     <string name="allowAllRotation_summary">在手机上启用 180° 旋转（通常仅平板可用）</string>
+    <string name="liftFcmNetworkLimit_title">解除 FCM 网络限制</string>
+    <string name="liftFcmNetworkLimit_summary">解除国行（包含港版）固件对 GMS/FCM 推送的网络限制</string>
 </resources>

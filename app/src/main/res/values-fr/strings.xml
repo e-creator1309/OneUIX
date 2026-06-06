@@ -147,4 +147,6 @@
     <string name="sideKeySettings">Paramètres de la touche latérale</string>
     <string name="allowAllRotation_title">Autoriser tous les angles de rotation</string>
     <string name="allowAllRotation_summary">Activer la rotation à 180° sur les téléphones (normalement disponible uniquement sur les tablettes)</string>
+    <string name="liftFcmNetworkLimit_title">Lever la limite réseau FCM</string>
+    <string name="liftFcmNetworkLimit_summary">Supprimer la restriction du firmware Chine (y compris Hong Kong) qui limite l\'accès réseau des notifications GMS/FCM</string>
 </resources>

@@ -20,6 +20,7 @@ data class Preference(
         val setBlockableNotificationChannel: Boolean = false,
         val supportAppJumpBlock: Boolean = false,
         val allowAllRotation: Boolean = false,
+        val liftFcmNetworkLimit: Boolean = false,
     )
 
     @Serializable
