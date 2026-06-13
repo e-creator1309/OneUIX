@@ -4,6 +4,8 @@ import de.robv.android.xposed.IXposedHookZygoteInit
 import de.robv.android.xposed.IXposedHookInitPackageResources
 import de.robv.android.xposed.IXposedHookLoadPackage
 import de.robv.android.xposed.IXposedHookZygoteInit.StartupParam
+import de.robv.android.xposed.XC_MethodHook
+import de.robv.android.xposed.XposedHelpers
 import de.robv.android.xposed.callbacks.XC_InitPackageResources.InitPackageResourcesParam
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam
 import io.github.soclear.oneuix.BuildConfig
@@ -12,6 +14,7 @@ import io.github.soclear.oneuix.hook.systemui.ESIM
 import io.github.soclear.oneuix.hook.systemui.powermenu.PowerMenu
 import io.github.soclear.oneuix.hook.util.PreferenceProvider
 import io.github.soclear.oneuix.hook.util.addAssetPath
+import io.github.soclear.oneuix.hook.util.xlog
 
 
 @Suppress("unused")
@@ -29,6 +32,19 @@ class Main : IXposedHookLoadPackage, IXposedHookInitPackageResources, IXposedHoo
 
         when (lpparam.packageName) {
             Package.ANDROID -> {
+                try {
+                    XposedHelpers.findAndHookMethod(
+                        "com.samsung.android.server.wifi.ap.SemWifiApChipInfo",
+                        lpparam.classLoader,
+                        "checkWifiSharingAndPowerSave",
+                        object : XC_MethodHook() {
+                            override fun afterHookedMethod(param: MethodHookParam) {
+                                XposedHelpers.setBooleanField(param.thisObject, "mSupportWifiSharing", true)
+                            }
+                        })
+                } catch (t: Throwable) {
+                    xlog(t.stackTraceToString())
+                }
                 if (preference.android.disablePinVerifyPer72h) {
                     Android.disablePinVerifyPer72h(lpparam)
                 }
