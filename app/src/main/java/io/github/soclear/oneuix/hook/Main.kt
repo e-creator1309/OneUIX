@@ -55,6 +55,10 @@ class Main : IXposedHookLoadPackage, IXposedHookInitPackageResources, IXposedHoo
                 if (preference.android.liftFcmNetworkLimit) {
                     Android.liftFcmNetworkLimit(lpparam)
                 }
+
+                if (preference.android.disableScreenWakeOnPowerUnplugged) {
+                    Android.disableScreenWakeOnPowerUnplugged(lpparam)
+                }
             }
 
             Package.BROWSER -> {

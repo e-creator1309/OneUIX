@@ -107,6 +107,12 @@ fun DetailPaneAndroid(
             checked = uiState.liftFcmNetworkLimit,
             onCheckedChange = { onEvent(AndroidEvent.LiftFcmNetworkLimit(it)) }
         )
+        SwitchItem(
+            icon = ImageVector.vectorResource(id = R.drawable.mobile_screensaver),
+            title = stringResource(id = R.string.disableScreenWakeOnPowerUnplugged_title),
+            checked = uiState.disableScreenWakeOnPowerUnplugged,
+            onCheckedChange = { onEvent(AndroidEvent.DisableScreenWakeOnPowerUnplugged(it)) }
+        )
     }
 }
 
@@ -131,6 +137,9 @@ sealed interface AndroidEvent {
 
     @JvmInline
     value class LiftFcmNetworkLimit(val value: Boolean) : AndroidEvent
+
+    @JvmInline
+    value class DisableScreenWakeOnPowerUnplugged(val value: Boolean) : AndroidEvent
 }
 
 fun SettingViewModel.onAndroidEvent(event: AndroidEvent) {
@@ -188,6 +197,14 @@ fun SettingViewModel.onAndroidEvent(event: AndroidEvent) {
                 preference.copy(
                     android = preference.android.copy(
                         liftFcmNetworkLimit = event.value
+                    )
+                )
+            }
+
+            is AndroidEvent.DisableScreenWakeOnPowerUnplugged -> {
+                preference.copy(
+                    android = preference.android.copy(
+                        disableScreenWakeOnPowerUnplugged = event.value
                     )
                 )
             }

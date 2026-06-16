@@ -21,6 +21,7 @@ data class Preference(
         val supportAppJumpBlock: Boolean = false,
         val allowAllRotation: Boolean = false,
         val liftFcmNetworkLimit: Boolean = false,
+        val disableScreenWakeOnPowerUnplugged: Boolean = false,
     )
 
     @Serializable

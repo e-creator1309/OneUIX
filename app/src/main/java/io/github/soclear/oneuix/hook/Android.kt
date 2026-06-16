@@ -5,6 +5,7 @@ import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XC_MethodReplacement.DO_NOTHING
 import de.robv.android.xposed.XposedBridge
 import de.robv.android.xposed.XposedBridge.hookAllConstructors
+import de.robv.android.xposed.XposedBridge.hookAllMethods
 import de.robv.android.xposed.XposedHelpers.findAndHookMethod
 import de.robv.android.xposed.XposedHelpers.findClass
 import de.robv.android.xposed.XposedHelpers.findClassIfExists
@@ -99,13 +100,40 @@ object Android {
     fun disablePinVerifyPer72h(loadPackageParam: LoadPackageParam) {
         if (loadPackageParam.packageName != Package.ANDROID) return
         try {
-            XposedBridge.hookAllMethods(
+            hookAllMethods(
                 findClass(
                     "com.android.server.locksettings.LockSettingsStrongAuth",
                     loadPackageParam.classLoader
                 ),
                 "rescheduleStrongAuthTimeoutAlarm",
                 DO_NOTHING
+            )
+        } catch (t: Throwable) {
+            XposedBridge.log(t)
+        }
+    }
+
+    // 移除充电器时禁止亮屏
+    // PowerManagerService.updateIsPoweredLocked 在插拔充电器时会调用 wakePowerGroupLocked 点亮屏幕，
+    // 唤醒理由字符串为 "android.server.power:PLUGGED:" + mIsPowered。
+    // 拔出充电器时 mIsPowered 为 false，拦截该次唤醒即可（插入仍正常亮屏）。
+    fun disableScreenWakeOnPowerUnplugged(loadPackageParam: LoadPackageParam) {
+        if (loadPackageParam.packageName != Package.ANDROID) return
+        try {
+            hookAllMethods(
+                findClass(
+                    "com.android.server.power.PowerManagerService",
+                    loadPackageParam.classLoader
+                ),
+                "wakePowerGroupLocked",
+                object : XC_MethodHook() {
+                    override fun beforeHookedMethod(param: MethodHookParam) {
+                        val details = param.args.getOrNull(3) as? String ?: return
+                        if (details == "android.server.power:PLUGGED:false") {
+                            param.result = null
+                        }
+                    }
+                }
             )
         } catch (t: Throwable) {
             XposedBridge.log(t)

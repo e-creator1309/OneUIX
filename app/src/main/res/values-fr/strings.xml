@@ -149,4 +149,5 @@
     <string name="allowAllRotation_summary">Activer la rotation à 180° sur les téléphones (normalement disponible uniquement sur les tablettes)</string>
     <string name="liftFcmNetworkLimit_title">Lever la limite réseau FCM</string>
     <string name="liftFcmNetworkLimit_summary">Supprimer la restriction du firmware Chine (y compris Hong Kong) qui limite l\'accès réseau des notifications GMS/FCM</string>
+    <string name="disableScreenWakeOnPowerUnplugged_title">Garder l\'écran éteint au débranchement</string>
 </resources>
