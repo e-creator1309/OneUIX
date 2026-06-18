@@ -142,6 +142,13 @@ fun DetailPaneOther(
             checked = uiState.removeShortcutBadge,
             onCheckedChange = { onEvent(OtherEvent.RemoveShortcutBadge(it)) }
         )
+        SwitchItem(
+            icon = ImageVector.vectorResource(id = R.drawable.share),
+            title = stringResource(id = R.string.enableShareWithCoa_title),
+            summary = stringResource(id = R.string.enableShareWithCoa_summary),
+            checked = uiState.enableShareWithCoa,
+            onCheckedChange = { onEvent(OtherEvent.EnableShareWithCoa(it)) }
+        )
         SelectItem(
             icon = ImageVector.vectorResource(id = R.drawable.watch_pairing),
             title = stringResource(id = R.string.watchPairing_connectionMode_title),
@@ -234,6 +241,9 @@ sealed interface OtherEvent {
 
     @JvmInline
     value class SupplementChinaWearOsGms(val value: Boolean) : OtherEvent
+
+    @JvmInline
+    value class EnableShareWithCoa(val value: Boolean) : OtherEvent
 }
 
 fun SettingViewModel.onOtherEvent(event: OtherEvent) {
@@ -361,6 +371,12 @@ fun SettingViewModel.onOtherEvent(event: OtherEvent) {
             is OtherEvent.SupplementChinaWearOsGms -> preference.copy(
                 other = preference.other.copy(
                     supplementChinaWearOsGms = event.value
+                )
+            )
+
+            is OtherEvent.EnableShareWithCoa -> preference.copy(
+                other = preference.other.copy(
+                    enableShareWithCoa = event.value
                 )
             )
         }

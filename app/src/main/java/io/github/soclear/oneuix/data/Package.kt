@@ -16,6 +16,7 @@ object Package {
     const val NOTES = "com.samsung.android.app.notes"
     const val PHOTO_RETOUCHING = "com.sec.android.mimage.photoretouching"
     const val SETTINGS = "com.android.settings"
+    const val SHARE_LIVE = "com.samsung.android.app.sharelive"
     const val SM_CN = "com.samsung.android.sm_cn"
     const val STORE = "com.sec.android.app.samsungapps"
     const val SYSTEMUI = "com.android.systemui"

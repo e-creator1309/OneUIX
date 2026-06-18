@@ -223,6 +223,12 @@ class Main : IXposedHookLoadPackage, IXposedHookInitPackageResources, IXposedHoo
                 }
             }
 
+            Package.SHARE_LIVE -> {
+                if (preference.other.enableShareWithCoa) {
+                    ShareLive.enableShareWithCoa(lpparam)
+                }
+            }
+
             Package.STORE -> {
                 if (preference.other.blockGalaxyStoreAds) {
                     GalaxyStore.blockGalaxyStoreAds(lpparam)

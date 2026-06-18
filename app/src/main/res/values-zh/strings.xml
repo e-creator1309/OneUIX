@@ -132,6 +132,8 @@
     <string name="hideAppsSearchBar_title">隐藏应用屏幕搜索栏</string>
     <string name="removeShortcutBadge_title">移除快捷方式图标右下角小角标</string>
     <string name="removeShortcutBadge_summary">去掉桌面快捷方式图标右下角的原 APP 小角标</string>
+    <string name="enableShareWithCoa_title">开启与 Apple 设备分享</string>
+    <string name="enableShareWithCoa_summary">强制开启 Quick Share 设置中的「与 Apple 设备分享」入口，绕过 One UI 7 与地区限制</string>
     <string name="watchPairing_connectionMode_title">手表连接模式</string>
     <string name="watchPairing_connectionMode_summary">选择 Galaxy Wearable 处理 WearOS 区域模式的方式</string>
     <string name="watchPairing_mode_none">不修改（默认）</string>

@@ -132,6 +132,8 @@
     <string name="hideAppsSearchBar_title">Masquer la barre de recherche sur l\'écran des applications</string>
     <string name="removeShortcutBadge_title">Supprimer le badge en bas à droite du raccourci</string>
     <string name="removeShortcutBadge_summary">Supprimer le badge de l\'application d\'origine situé dans le coin inférieur droit des icônes de raccourci de l\'écran d\'accueil</string>
+    <string name="enableShareWithCoa_title">Activer le partage avec les appareils Apple</string>
+    <string name="enableShareWithCoa_summary">Forcer l\'activation de l\'entrée « Partager avec les appareils Apple » dans les paramètres de Quick Share, en contournant les restrictions One UI 7 et régionales</string>
     <string name="watchPairing_connectionMode_title">Mode de connexion de la montre</string>
     <string name="watchPairing_connectionMode_summary">Choisir la façon dont Galaxy Wearable gère le mode régional WearOS</string>
     <string name="watchPairing_mode_none">Aucune modification (par défaut)</string>
