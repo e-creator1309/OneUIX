@@ -22,7 +22,11 @@ import io.github.soclear.oneuix.data.Package
 object Settings {
     private val shareLiveForcedBooleanPrefs = setOf(
         "share_with_coa_option",
-        "protocol_x_supported"
+        "protocol_x_supported",
+        "china_p2p_component",
+        "discovery_additional_feature",
+        "scan_my_device_visibility_off",
+        "visibility_temporary_option"
     )
 
     fun showPackageInfo(loadPackageParam: LoadPackageParam) {
@@ -229,6 +233,8 @@ object Settings {
 
         hookShareLivePreferences(loadPackageParam)
         hookShareLiveBooleanMethod(loadPackageParam, "lf.l", "c")
+        hookShareLiveBooleanMethod(loadPackageParam, "ws.b", "a")
+        hookShareLiveBooleanMethod(loadPackageParam, "ws.b", "b")
         hookProtocolXRepository(loadPackageParam)
     }
 
