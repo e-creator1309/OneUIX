@@ -17,8 +17,8 @@ android {
         applicationId = "io.github.soclear.oneuix"
         minSdk = 33
         targetSdk = 37
-        versionCode = 6
-        versionName = "1.4.0"
+        versionCode = 7
+        versionName = "1.5.0"
 
         ndk {
             // ABI过滤，只加载 arm 架构 64 位动态链接库
