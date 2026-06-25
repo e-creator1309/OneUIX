@@ -1,9 +1,12 @@
 package io.github.soclear.oneuix.hook
 
-import de.robv.android.xposed.IXposedHookZygoteInit
 import de.robv.android.xposed.IXposedHookInitPackageResources
 import de.robv.android.xposed.IXposedHookLoadPackage
+import de.robv.android.xposed.IXposedHookZygoteInit
 import de.robv.android.xposed.IXposedHookZygoteInit.StartupParam
+import de.robv.android.xposed.XC_MethodHook
+import de.robv.android.xposed.XC_MethodReplacement
+import de.robv.android.xposed.XposedHelpers
 import de.robv.android.xposed.callbacks.XC_InitPackageResources.InitPackageResourcesParam
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam
 import io.github.soclear.oneuix.BuildConfig
@@ -28,6 +31,28 @@ class Main : IXposedHookLoadPackage, IXposedHookInitPackageResources, IXposedHoo
         val preference = PreferenceProvider.preference ?: return
 
         when (lpparam.packageName) {
+            "com.android.providers.contacts"->{
+                val csc = XposedHelpers.findClass(
+                    "com.android.providers.contacts.util.sec.LoadCscFeatureUtils",
+                    lpparam.classLoader
+                )
+
+                // 主拼音索引 g() 的开关(c() 的数据源)
+                XposedHelpers.findAndHookMethod(
+                    csc,
+                    "getOpStyleVariation",
+                    XC_MethodReplacement.returnConstant("CHN"))
+
+                // 多音字 h() + fuzzy
+                XposedHelpers.findAndHookMethod(
+                    csc, "getEnableMultiPinyinSearch",
+                    XC_MethodReplacement.returnConstant(true)
+                )
+                XposedHelpers.findAndHookMethod(
+                    csc, "getEnableSupportFuzzySearch",
+                    XC_MethodReplacement.returnConstant(true)
+                )
+            }
             Package.ANDROID -> {
                 if (preference.android.disablePinVerifyPer72h) {
                     Android.disablePinVerifyPer72h(lpparam)
@@ -90,6 +115,12 @@ class Main : IXposedHookLoadPackage, IXposedHookInitPackageResources, IXposedHoo
             }
 
             Package.DIALER -> {
+                XposedHelpers.findAndHookMethod(
+                    "com.samsung.android.dialtacts.util.CscFeatureUtil",
+                    lpparam.classLoader,
+                    "isFuzzySearchEnabled",
+                    XC_MethodReplacement.returnConstant(true)
+                )
                 if (preference.call.supportVoiceCallRecording) {
                     Call.supportVoiceCallRecording(
                         lpparam,
