@@ -26,6 +26,7 @@ import de.robv.android.xposed.XC_MethodReplacement.returnConstant
 import de.robv.android.xposed.XposedBridge
 import de.robv.android.xposed.XposedBridge.hookAllConstructors
 import de.robv.android.xposed.XposedBridge.hookAllMethods
+import de.robv.android.xposed.XposedHelpers
 import de.robv.android.xposed.XposedHelpers.callMethod
 import de.robv.android.xposed.XposedHelpers.callStaticMethod
 import de.robv.android.xposed.XposedHelpers.findAndHookConstructor
@@ -34,6 +35,7 @@ import de.robv.android.xposed.XposedHelpers.findClass
 import de.robv.android.xposed.XposedHelpers.findClassIfExists
 import de.robv.android.xposed.XposedHelpers.getIntField
 import de.robv.android.xposed.XposedHelpers.getObjectField
+import de.robv.android.xposed.XposedHelpers.setBooleanField
 import de.robv.android.xposed.XposedHelpers.setIntField
 import de.robv.android.xposed.XposedHelpers.setObjectField
 import de.robv.android.xposed.callbacks.XC_InitPackageResources.InitPackageResourcesParam
@@ -41,8 +43,10 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam
 import io.github.soclear.oneuix.data.ONE_UI_VERSION
 import io.github.soclear.oneuix.data.Package
 import io.github.soclear.oneuix.hook.util.TraditionalChineseCalendar
+import io.github.soclear.oneuix.hook.util.xlog
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.Collections
 import kotlin.math.roundToInt
 
 
@@ -1290,6 +1294,49 @@ object SystemUI {
                     }
                 }
             })
+        } catch (t: Throwable) {
+            XposedBridge.log(t)
+        }
+    }
+
+    fun autoExpandNotifications(loadPackageParam: LoadPackageParam) {
+        if (loadPackageParam.packageName != Package.SYSTEMUI) return
+        try {
+            findAndHookMethod(
+                "com.android.systemui.statusbar.notification.row.ExpandableNotificationRow",
+                loadPackageParam.classLoader,
+                "isExpanded",
+                Boolean::class.java,
+                object : XC_MethodHook() {
+                    override fun afterHookedMethod(param: MethodHookParam) {
+                        try {
+                            val row = param.thisObject
+                            // 确保非分组展开开关被打开
+                            setBooleanField(row, "mEnableNonGroupedNotificationExpand", true)
+                            // 1. 锁屏敏感隐私校验
+                            val shouldShowPublic = callMethod(row, "shouldShowPublic") as Boolean
+                            if (shouldShowPublic) {
+                                // 锁屏隐藏敏感内容时不展开
+                                return
+                            }
+                            // 2. 锁屏状态与 keyguard 约束校验
+                            val onKeyguard = XposedHelpers.getBooleanField(row, "mOnKeyguard")
+                            val allowOnKeyguard = param.args[0] as Boolean
+                            if (onKeyguard && !allowOnKeyguard) {
+                                return
+                            }
+                            // 3. 用户手动折叠校验（若用户手动折叠了该单条通知，则不强制展开）
+                            val hasUserChanged =
+                                XposedHelpers.getBooleanField(row, "mHasUserChangedExpansion")
+                            if (!hasUserChanged) {
+                                param.setResult(true)
+                            }
+                        } catch (t: Throwable) {
+                            XposedBridge.log(t)
+                        }
+                    }
+                }
+            )
         } catch (t: Throwable) {
             XposedBridge.log(t)
         }

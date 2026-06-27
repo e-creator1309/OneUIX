@@ -233,6 +233,9 @@ class Main : IXposedHookLoadPackage, IXposedHookInitPackageResources, IXposedHoo
                 if (preference.android.setBlockableNotificationChannel) {
                     Android.setBlockableNotificationChannel()
                 }
+                if (preference.systemUI.other.autoExpandNotifications) {
+                    SystemUI.autoExpandNotifications(lpparam)
+                }
 
                 run {
                     val leftPaddingDp =

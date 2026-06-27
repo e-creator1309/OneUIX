@@ -63,6 +63,7 @@
     <string name="disableScreenshotCaptureSound_title">Отключить звук скриншота</string>
     <string name="disableNotificationGrouping_title">Отключить группировку уведомлений</string>
     <string name="disableNotificationGrouping_summary">Запретить объединение значков в строке состояния и группировку в центре уведомлений для уведомлений одного приложения</string>
+    <string name="autoExpandNotifications_title">Автоматически разворачивать уведомления</string>
     <string name="hideOngoingActivityMedia_title">Скрыть активность медиаприложений</string>
     <string name="hideOngoingActivityMedia_summary">Скрывать капсулу активности в строке состояния и медиауведомление при воспроизведении музыки в фоне</string>
     <string name="hideOngoingActivityMedia_packages_hint">Имена пакетов через запятую</string>

@@ -786,6 +786,14 @@ fun DetailPaneSystemUI(
                 onEvent(SystemUIEvent.Other.DisableNotificationGrouping(it))
             }
         )
+        SwitchItem(
+            icon = ImageVector.vectorResource(id = R.drawable.notifications),
+            title = stringResource(id = R.string.autoExpandNotifications_title),
+            checked = uiState.other.autoExpandNotifications,
+            onCheckedChange = {
+                onEvent(SystemUIEvent.Other.AutoExpandNotifications(it))
+            }
+        )
     }
 }
 
@@ -1034,6 +1042,9 @@ sealed interface SystemUIEvent {
 
         @JvmInline
         value class DisableNotificationGrouping(val value: Boolean) : Other
+
+        @JvmInline
+        value class AutoExpandNotifications(val value: Boolean) : Other
 
         @JvmInline
         value class HideOngoingActivityMedia(val value: Boolean) : Other
@@ -1562,6 +1573,16 @@ private fun SettingViewModel.onOtherEvent(event: SystemUIEvent.Other) {
                     systemUI = preference.systemUI.copy(
                         other = preference.systemUI.other.copy(
                             disableNotificationGrouping = event.value
+                        )
+                    )
+                )
+            }
+
+            is SystemUIEvent.Other.AutoExpandNotifications -> {
+                preference.copy(
+                    systemUI = preference.systemUI.copy(
+                        other = preference.systemUI.other.copy(
+                            autoExpandNotifications = event.value
                         )
                     )
                 )

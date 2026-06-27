@@ -95,6 +95,7 @@ data class Preference(
             val powerMenuActions: List<PowerMenuAction> =
                 PowerMenuAction.defaultPreferences(),
             val disableNotificationGrouping: Boolean = false,
+            val autoExpandNotifications: Boolean = false,
             val hideOngoingActivityMedia: Boolean = false,
             val hideOngoingActivityMediaPackages: String = "",
         )

@@ -63,6 +63,7 @@
     <string name="disableScreenshotCaptureSound_title">Désactiver le son des captures d\'écran</string>
     <string name="disableNotificationGrouping_title">Désactiver le regroupement des notifications</string>
     <string name="disableNotificationGrouping_summary">Empêcher la fusion des icônes dans la barre d\'état et le regroupement dans le centre de notifications pour les notifications d\'une même application</string>
+    <string name="autoExpandNotifications_title">Développer automatiquement les notifications</string>
     <string name="hideOngoingActivityMedia_title">Masquer l\'activité en cours des applications multimédias</string>
     <string name="hideOngoingActivityMedia_summary">Masquer la pastille d\'activité en cours dans la barre d\'état et la carte de notification multimédia lors de la lecture de musique en arrière-plan</string>
     <string name="hideOngoingActivityMedia_packages_hint">Noms de packages, séparés par des virgules</string>
