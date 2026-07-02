@@ -123,6 +123,8 @@
     <string name="noAIWatermark_title">禁用图片编辑器 AI 水印</string>
     <string name="bypassHealthMonitorCountryCheck_title">绕过 Samsung Health Monitor 国家检查</string>
     <string name="bypassHealthMonitorCountryCheck_summary">在不支持的国家/地区使用 Health Monitor</string>
+    <string name="enableShareWithApple_title">显示"与 Apple 设备共享"</string>
+    <string name="enableShareWithApple_summary">强制开启 Quick Share 的"与 Apple 设备共享"开关。实际传输仍需 GMS Nearby(mosey) 组件，国行机型缺少该组件，可能仅能显示开关。</string>
     <string name="useSPenGoogleTranslate_title">S Pen 使用谷歌翻译</string>
     <string name="useSPenGoogleTranslate_summary">将 S Pen 翻译源从百度切换为谷歌</string>
     <string name="supportCallAndTextOnOtherDevices_title">支持跨设备接打电话和收发短信</string>

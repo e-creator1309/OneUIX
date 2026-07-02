@@ -123,6 +123,13 @@ fun DetailPaneOther(
             onCheckedChange = { onEvent(OtherEvent.BypassHealthMonitorCountryCheck(it)) }
         )
         SwitchItem(
+            icon = ImageVector.vectorResource(id = R.drawable.person_pin_circle),
+            title = stringResource(id = R.string.enableShareWithApple_title),
+            summary = stringResource(id = R.string.enableShareWithApple_summary),
+            checked = uiState.enableShareWithApple,
+            onCheckedChange = { onEvent(OtherEvent.EnableShareWithApple(it)) }
+        )
+        SwitchItem(
             icon = ImageVector.vectorResource(id = R.drawable.spen),
             title = stringResource(id = R.string.useSPenGoogleTranslate_title),
             summary = stringResource(id = R.string.useSPenGoogleTranslate_summary),
@@ -234,6 +241,9 @@ sealed interface OtherEvent {
 
     @JvmInline
     value class SupplementChinaWearOsGms(val value: Boolean) : OtherEvent
+
+    @JvmInline
+    value class EnableShareWithApple(val value: Boolean) : OtherEvent
 }
 
 fun SettingViewModel.onOtherEvent(event: OtherEvent) {
@@ -361,6 +371,12 @@ fun SettingViewModel.onOtherEvent(event: OtherEvent) {
             is OtherEvent.SupplementChinaWearOsGms -> preference.copy(
                 other = preference.other.copy(
                     supplementChinaWearOsGms = event.value
+                )
+            )
+
+            is OtherEvent.EnableShareWithApple -> preference.copy(
+                other = preference.other.copy(
+                    enableShareWithApple = event.value
                 )
             )
         }

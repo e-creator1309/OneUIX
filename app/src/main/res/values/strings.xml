@@ -123,6 +123,8 @@
     <string name="noAIWatermark_title">Disable Photo Editor AI watermark</string>
     <string name="bypassHealthMonitorCountryCheck_title">Bypass Samsung Health Monitor country check</string>
     <string name="bypassHealthMonitorCountryCheck_summary">Allow using Health Monitor in unsupported countries</string>
+    <string name="enableShareWithApple_title">Show Share with Apple devices</string>
+    <string name="enableShareWithApple_summary">Force-enable the Quick Share \"Share with Apple devices\" switch. Actual transfer still needs GMS Nearby (mosey), which China models lack, so it may only become visible.</string>
     <string name="useSPenGoogleTranslate_title">Use Google Translate for S Pen</string>
     <string name="useSPenGoogleTranslate_summary">Switch S Pen translate source from Baidu to Google</string>
     <string name="supportCallAndTextOnOtherDevices_title">Support call &amp; text on other devices</string>

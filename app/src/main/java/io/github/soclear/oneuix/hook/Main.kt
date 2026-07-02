@@ -171,6 +171,12 @@ class Main : IXposedHookLoadPackage, IXposedHookInitPackageResources, IXposedHoo
                 }
             }
 
+            Package.SHARE_LIVE -> {
+                if (preference.other.enableShareWithApple) {
+                    ShareLive.enableShareWithApple(lpparam)
+                }
+            }
+
             Package.SETTINGS -> {
                 if (preference.android.setBlockableNotificationChannel) {
                     Android.setBlockableNotificationChannel()

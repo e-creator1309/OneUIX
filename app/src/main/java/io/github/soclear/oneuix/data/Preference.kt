@@ -149,6 +149,7 @@ data class Preference(
         val bypassWatchPairingRegionCheck: Boolean = false,
         val watchPairingConnectionMode: Int = 0,
         val supplementChinaWearOsGms: Boolean = false,
+        val enableShareWithApple: Boolean = false,
     )
 
     companion object {
