@@ -123,6 +123,8 @@
     <string name="noAIWatermark_title">Отключить ИИ-водяной знак в фоторедакторе</string>
     <string name="bypassHealthMonitorCountryCheck_title">Обход проверки региона в Samsung Health Monitor</string>
     <string name="bypassHealthMonitorCountryCheck_summary">Разрешить использование Health Monitor в неподдерживаемых странах</string>
+    <string name="enableShareWithApple_title">Показать «Поделиться с устройствами Apple»</string>
+    <string name="enableShareWithApple_summary">Принудительно включить переключатель «Поделиться с устройствами Apple» в Quick Share. Для передачи всё равно нужен компонент GMS Nearby (mosey), которого нет на китайских моделях, поэтому переключатель может лишь отображаться.</string>
     <string name="useSPenGoogleTranslate_title">Использовать Google Переводчик для S Pen</string>
     <string name="useSPenGoogleTranslate_summary">Переключить источник перевода S Pen с Baidu на Google</string>
     <string name="supportCallAndTextOnOtherDevices_title">Вызовы и СМС на других устройствах</string>

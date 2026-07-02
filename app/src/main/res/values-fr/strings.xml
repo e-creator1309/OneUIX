@@ -123,6 +123,8 @@
     <string name="noAIWatermark_title">Désactiver le filigrane IA de l\'éditeur de photos</string>
     <string name="bypassHealthMonitorCountryCheck_title">Contourner la vérification de pays Samsung Health Monitor</string>
     <string name="bypassHealthMonitorCountryCheck_summary">Utiliser Health Monitor dans les pays non pris en charge</string>
+    <string name="enableShareWithApple_title">Afficher « Partager avec les appareils Apple »</string>
+    <string name="enableShareWithApple_summary">Forcer l\'activation du bouton « Partager avec les appareils Apple » de Quick Share. Le transfert nécessite toujours le composant GMS Nearby (mosey), absent des modèles chinois, donc le bouton peut seulement s\'afficher.</string>
     <string name="useSPenGoogleTranslate_title">Utiliser Google Traduction pour S Pen</string>
     <string name="useSPenGoogleTranslate_summary">Basculer la source de traduction S Pen de Baidu à Google</string>
     <string name="supportCallAndTextOnOtherDevices_title">Prend en charge les Appels/SMS sur les autres appareils</string>
