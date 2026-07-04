@@ -142,6 +142,20 @@ fun DetailPaneOther(
             checked = uiState.removeShortcutBadge,
             onCheckedChange = { onEvent(OtherEvent.RemoveShortcutBadge(it)) }
         )
+        SwitchItem(
+            icon = ImageVector.vectorResource(id = R.drawable.light_mode),
+            title = stringResource(id = R.string.enableIconShadow_title),
+            summary = stringResource(id = R.string.enableIconShadow_summary),
+            checked = uiState.enableIconShadow,
+            onCheckedChange = { onEvent(OtherEvent.EnableIconShadow(it)) }
+        )
+        SwitchItem(
+            icon = ImageVector.vectorResource(id = R.drawable.apps),
+            title = stringResource(id = R.string.liquidSearchBar_title),
+            summary = stringResource(id = R.string.liquidSearchBar_summary),
+            checked = uiState.liquidSearchBar,
+            onCheckedChange = { onEvent(OtherEvent.LiquidSearchBar(it)) }
+        )
         SelectItem(
             icon = ImageVector.vectorResource(id = R.drawable.watch_pairing),
             title = stringResource(id = R.string.watchPairing_connectionMode_title),
@@ -234,6 +248,12 @@ sealed interface OtherEvent {
 
     @JvmInline
     value class SupplementChinaWearOsGms(val value: Boolean) : OtherEvent
+
+    @JvmInline
+    value class EnableIconShadow(val value: Boolean) : OtherEvent
+
+    @JvmInline
+    value class LiquidSearchBar(val value: Boolean) : OtherEvent
 }
 
 fun SettingViewModel.onOtherEvent(event: OtherEvent) {
@@ -361,6 +381,18 @@ fun SettingViewModel.onOtherEvent(event: OtherEvent) {
             is OtherEvent.SupplementChinaWearOsGms -> preference.copy(
                 other = preference.other.copy(
                     supplementChinaWearOsGms = event.value
+                )
+            )
+
+            is OtherEvent.EnableIconShadow -> preference.copy(
+                other = preference.other.copy(
+                    enableIconShadow = event.value
+                )
+            )
+
+            is OtherEvent.LiquidSearchBar -> preference.copy(
+                other = preference.other.copy(
+                    liquidSearchBar = event.value
                 )
             )
         }
