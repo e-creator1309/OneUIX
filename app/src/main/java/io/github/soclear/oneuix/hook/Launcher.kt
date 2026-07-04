@@ -6,6 +6,7 @@ import android.app.ActivityManager
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
+import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.os.Bundle
 import android.util.AttributeSet
@@ -428,4 +429,91 @@ object Launcher {
             XposedBridge.log(t)
         }
     }
+    fun enableIconShadow(loadPackageParam: LoadPackageParam) {
+        // Hook SharedPreferences to enable icon shadow (3D depth effect like OneUI 8.5)
+        // "enable_icon_shadow" is Samsung's launcher preference for double-shadow icon rendering
+        if (loadPackageParam.packageName != Package.LAUNCHER) return
+        try {
+            findAndHookMethod(
+                "android.app.SharedPreferencesImpl",
+                loadPackageParam.classLoader,
+                "getBoolean",
+                String::class.java,
+                Boolean::class.javaPrimitiveType,
+                object : XC_MethodHook() {
+                    override fun afterHookedMethod(param: MethodHookParam) {
+                        val key = param.args[0] as? String ?: return
+                        if (key == "enable_icon_shadow" || key == "ENABLE_ICON_SHADOW") {
+                            param.result = true
+                        }
+                    }
+                }
+            )
+        } catch (t: Throwable) {
+            XposedBridge.log(t)
+        }
+    }
+
+    fun liquidSearchBar(loadPackageParam: LoadPackageParam) {
+        // Make the apps-screen search bar smaller and pill-shaped like OneUI 8.5 Liquid Glass
+        if (loadPackageParam.packageName != Package.LAUNCHER) return
+        try {
+            findAndHookConstructor(
+                "com.honeyspace.ui.honeypots.appscreen.presentation.AppsSearchBar",
+                loadPackageParam.classLoader,
+                Context::class.java,
+                AttributeSet::class.java,
+                object : XC_MethodHook() {
+                    override fun afterHookedMethod(param: MethodHookParam) {
+                        val searchBar = param.thisObject as View
+                        searchBar.addOnAttachStateChangeListener(object :
+                            View.OnAttachStateChangeListener {
+                            override fun onViewAttachedToWindow(v: View) {
+                                applyLiquidStyle(v)
+                            }
+
+                            override fun onViewDetachedFromWindow(v: View) {}
+                        })
+                        searchBar.addOnLayoutChangeListener { v, _, _, _, _, _, _, _, _ ->
+                            val p = v.parent as? ViewGroup
+                                ?: return@addOnLayoutChangeListener
+                            if (p.width > 0) applyLiquidStyle(v)
+                        }
+                    }
+
+                    private fun applyLiquidStyle(view: View) {
+                        val parent = view.parent as? ViewGroup ?: return
+                        val parentWidth = parent.width
+                        if (parentWidth <= 0) return
+
+                        val density = view.resources.displayMetrics.density
+                        val targetWidth = (parentWidth * 0.78f).toInt()
+                        if (view.layoutParams.width == targetWidth) return
+
+                        val params = view.layoutParams
+                        params.width = targetWidth
+                        if (params is ViewGroup.MarginLayoutParams) {
+                            val margin = (parentWidth - targetWidth) / 2
+                            params.marginStart = margin
+                            params.marginEnd = margin
+                        }
+                        view.layoutParams = params
+
+                        // Liquid glass: pill shape, semi-transparent, subtle border
+                        val drawable = GradientDrawable().apply {
+                            shape = GradientDrawable.RECTANGLE
+                            cornerRadius = 50f * density
+                            setColor(Color.argb(40, 180, 180, 180))
+                            setStroke((0.8f * density).toInt(), Color.argb(30, 255, 255, 255))
+                        }
+                        view.background = drawable
+                        view.elevation = 3f * density
+                    }
+                }
+            )
+        } catch (t: Throwable) {
+            XposedBridge.log(t)
+        }
+    }
+
 }
