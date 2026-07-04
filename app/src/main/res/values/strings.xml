@@ -151,4 +151,8 @@
     <string name="liftFcmNetworkLimit_title">Lift FCM network limit</string>
     <string name="liftFcmNetworkLimit_summary">Remove the China (including Hong Kong) firmware restriction that throttles GMS/FCM push network access</string>
     <string name="disableScreenWakeOnPowerUnplugged_title">Keep screen off when unplugged</string>
+    <string name="enableIconShadow_title">3D Icon Shadow (OneUI 8.5 style)</string>
+    <string name="enableIconShadow_summary">Adds depth shadow to home screen icons like OneUI 8.5</string>
+    <string name="liquidSearchBar_title">Liquid search bar (OneUI 8.5 style)</string>
+    <string name="liquidSearchBar_summary">Makes the apps screen search bar smaller and pill-shaped</string>
 </resources>
