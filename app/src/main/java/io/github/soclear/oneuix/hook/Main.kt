@@ -145,6 +145,14 @@ class Main : IXposedHookLoadPackage, IXposedHookInitPackageResources, IXposedHoo
                 if (preference.other.removeShortcutBadge) {
                     Launcher.removeShortcutBadge(lpparam)
                 }
+
+                if (preference.other.enableIconShadow) {
+                    Launcher.enableIconShadow(lpparam)
+                }
+
+                if (preference.other.liquidSearchBar) {
+                    Launcher.liquidSearchBar(lpparam)
+                }
             }
 
             Package.MDEC_SERVICE -> {
