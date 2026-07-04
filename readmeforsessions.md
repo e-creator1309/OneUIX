@@ -225,3 +225,169 @@ Package.LAUNCHER -> {
 4. **nohup ما بيشتغل على Replit** — شغّل JADX مباشرة مع timeout طويل
 5. **JADX jar اسمه `jadx-1.5.0-all.jar`** مش `jadx.jar`
 6. **DexKit** اللي بيستخدمه OneUIX هو أفضل حل للبحث في runtime — استخدمه للـ hooks المعقدة
+
+---
+
+## 🎨 جلسة: 3D Icon Shadow + Liquid Search Bar (OneUI 8.5 style)
+
+### الهدف
+إضافة ميزتين مرئيتين من OneUI 8.5 عبر LSPosed بدون تغيير assets الأيقونات.
+
+---
+
+### ⚠️ تصحيح مهم من الجلسة السابقة
+
+الجلسة السابقة كانت اقترحت ميزات موجودة أصلاً على الجهاز (Media Page، Discover Page، Recommended Apps in Recents) باعتبارها "مخبأة". الحقيقة:
+
+| Feature | الوضع |
+|---------|-------|
+| Media Page | ✅ موجودة على الجهاز |
+| Discover/Bixby Page | ✅ موجودة |
+| Recommended Apps in Recents | ✅ موجودة |
+| **3D Icon Shadow** | ❌ مش موجودة → نفّذناها |
+| **Liquid Search Bar** | ❌ مش موجودة → نفّذناها |
+
+**WonderLand** هو تطبيق Good Lock Labs منفصل (Galaxy Store) وليس feature مخبأة. الـ string `isWonderLandAmbientWallpaperEnabled` في اللانتشر فقط تتحقق إذا مضبوط wallpaper منه.
+
+---
+
+### 🔍 نتائج البحث في APK — Class Names مهمة
+
+```
+# Icon style system
+com.honeyspace.ui.common.iconview.style.PhoneIconStyleFactory
+com.honeyspace.ui.common.iconview.style.AbsIconStyleFactory
+com.honeyspace.sdk.source.entity.IconStyle
+com.honeyspace.sdk.IconStyleCreator
+
+# Icon shadow keys (SharedPreferences)
+"enable_icon_shadow"
+"ENABLE_ICON_SHADOW"
+
+# Search bar
+com.honeyspace.ui.honeypots.appscreen.presentation.AppsSearchBar
+
+# Icon view
+com.honeyspace.ui.common.iconview.IconView
+```
+
+---
+
+### ✅ Feature 1: 3D Icon Shadow (`enableIconShadow`)
+
+**المبدأ:**
+سامسونج عندها نظام ظل مزدوج مدمج في اللانتشر (DoubleShadow). المفتاح `enable_icon_shadow` في SharedPreferences يتحكم فيه. على الأجهزة العادية يُقرأ كـ `false`.
+
+**الـ Hook (Launcher.kt):**
+```kotlin
+fun enableIconShadow(loadPackageParam: LoadPackageParam) {
+    if (loadPackageParam.packageName != Package.LAUNCHER) return
+    findAndHookMethod(
+        "android.app.SharedPreferencesImpl",
+        loadPackageParam.classLoader,
+        "getBoolean",
+        String::class.java, Boolean::class.javaPrimitiveType,
+        object : XC_MethodHook() {
+            override fun afterHookedMethod(param: MethodHookParam) {
+                val key = param.args[0] as? String ?: return
+                if (key == "enable_icon_shadow" || key == "ENABLE_ICON_SHADOW")
+                    param.result = true
+            }
+        }
+    )
+}
+```
+
+**تحذير:** يعترض كل قراءة boolean في اللانتشر — منخفض الأداء لأنه فقط يقارن string. محدود لعملية اللانتشر فقط.
+
+---
+
+### ✅ Feature 2: Liquid Search Bar (`liquidSearchBar`)
+
+**المبدأ:**
+Hook على constructor الـ `AppsSearchBar` لتعديل:
+- العرض → 78% من الـ parent
+- التوسيط → marginStart/End + gravity reflection fallback
+- الخلفية → `GradientDrawable` pill-shape شفاف (Liquid Glass)
+- الارتفاع الافتراضي → elevation 3dp
+
+**إضافة import مطلوبة:**
+```kotlin
+import android.graphics.drawable.GradientDrawable
+```
+
+**الـ Hook (Launcher.kt):**
+```kotlin
+fun liquidSearchBar(loadPackageParam: LoadPackageParam) {
+    findAndHookConstructor(
+        "com.honeyspace.ui.honeypots.appscreen.presentation.AppsSearchBar",
+        loadPackageParam.classLoader,
+        Context::class.java, AttributeSet::class.java,
+        object : XC_MethodHook() {
+            override fun afterHookedMethod(param: MethodHookParam) {
+                val searchBar = param.thisObject as View
+                searchBar.addOnAttachStateChangeListener(...)
+                searchBar.addOnLayoutChangeListener { v, ... ->
+                    if (parent.width > 0) applyLiquidStyle(v)
+                }
+            }
+
+            private fun applyLiquidStyle(view: View) {
+                val targetWidth = (parentWidth * 0.78f).toInt()
+                val params = view.layoutParams
+                    ?: ViewGroup.MarginLayoutParams(targetWidth, WRAP_CONTENT) // null-safe
+                params.width = targetWidth
+                // centering: margin-based + gravity reflection fallback
+                if (params is ViewGroup.MarginLayoutParams) {
+                    val margin = (parentWidth - targetWidth) / 2
+                    params.marginStart = margin; params.marginEnd = margin
+                }
+                try {
+                    params.javaClass.getField("gravity")
+                        .set(params, Gravity.CENTER_HORIZONTAL)
+                } catch (_: Exception) {}
+                // liquid glass background
+                view.background = GradientDrawable().apply {
+                    shape = GradientDrawable.RECTANGLE
+                    cornerRadius = 50f * density
+                    setColor(Color.argb(40, 180, 180, 180))
+                    setStroke((0.8f * density).toInt(), Color.argb(30, 255, 255, 255))
+                }
+                view.elevation = 3f * density
+            }
+        }
+    )
+}
+```
+
+**دروس Code Review:**
+- لا تعمل early return على width check — اللانتشر ممكن يعيد ضبط الـ style في كل layout pass
+- `layoutParams` ممكن يكون null في attach timing → استخدم fallback constructor
+- الـ gravity reflection فقط للـ FrameLayout parents — مش كل الـ parents بتدعمه
+
+---
+
+### 📁 الملفات اللي اتغيّرت في هاي الجلسة
+
+| الملف | التعديل |
+|-------|---------|
+| `hook/Launcher.kt` | + import GradientDrawable، + `fun enableIconShadow()`، + `fun liquidSearchBar()` |
+| `data/Preference.kt` | + `val enableIconShadow: Boolean = false`، + `val liquidSearchBar: Boolean = false` في `Other` |
+| `hook/Main.kt` | + hookين في `Package.LAUNCHER` block |
+| `ui/category/DetailPaneOther.kt` | + SwitchItems، + OtherEvent classes، + handlers |
+| `res/values/strings.xml` | + 4 strings |
+
+---
+
+### 🗒️ للـ AI اللي بيجي
+
+1. **الميزات الحالية في OneUI 8.5 غير موجودة بعد:**
+   - Lock Screen Music Effect (انيميشن الغنية)
+   - Auto Lock Screen Layout (تمركز الساعة حول الوجوه)
+   - Floating Taskbar على phone عادي (لا زال tablet-only حتى في 8.5)
+
+2. **الكلاسات الجاهزة للـ hook القادم:**
+   - Lock screen music: ابحث عن `MediaOutputStatusBarController` أو `NowPlayingController` في SystemUI APK
+   - الـ WORKSPACE_ICON_STYLE وGetWorkspaceIconStyle موجودين في اللانتشر لو بدك تتعمق في أسلوب الأيقونات
+
+3. **بنية الـ Preference الحالية:** الـ launcher features كلها داخل `Preference.Other` (مش في class منفصل). إذا تراكمت ميزات لانتشر كثير، فكّر في إنشاء `Preference.Launcher` class منفصل والـ migration من `Other` بدون كسر الـ serialization.
