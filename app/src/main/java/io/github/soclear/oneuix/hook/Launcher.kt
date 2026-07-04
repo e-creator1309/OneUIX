@@ -488,16 +488,27 @@ object Launcher {
 
                         val density = view.resources.displayMetrics.density
                         val targetWidth = (parentWidth * 0.78f).toInt()
-                        if (view.layoutParams.width == targetWidth) return
 
-                        val params = view.layoutParams
+                        // Update size + centering (always, not just on width change)
+                        // so launcher theme resets cannot override our style permanently
+                        val params = view.layoutParams ?: ViewGroup.MarginLayoutParams(
+                            targetWidth, ViewGroup.LayoutParams.WRAP_CONTENT
+                        )
                         params.width = targetWidth
+
+                        // Center via margins (works for LinearLayout / FrameLayout parents)
                         if (params is ViewGroup.MarginLayoutParams) {
                             val margin = (parentWidth - targetWidth) / 2
                             params.marginStart = margin
                             params.marginEnd = margin
                         }
                         view.layoutParams = params
+
+                        // Also attempt gravity-based centering for FrameLayout parents
+                        try {
+                            val gravityField = params.javaClass.getField("gravity")
+                            gravityField.set(params, android.view.Gravity.CENTER_HORIZONTAL)
+                        } catch (_: Exception) {}
 
                         // Liquid glass: pill shape, semi-transparent, subtle border
                         val drawable = GradientDrawable().apply {
